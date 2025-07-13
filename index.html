@@ -14,10 +14,8 @@
     input, textarea { width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px; margin: 5px 0; }
     button { padding: 10px 20px; border: none; background: #ff69b4; color: white; border-radius: 5px; cursor: pointer; }
     .card { background: #fff; padding: 20px; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); margin-bottom: 20px; }
-    .product, .rental { border: 1px solid #ccc; padding: 10px; border-radius: 8px; background: #fff; margin-bottom: 10px; display: flex; flex-direction: column; align-items: center; }
-    .product img, .rental img { max-width: 100%; border-radius: 6px; max-height: 150px; object-fit: cover; }
-    .admin-only { color: red; margin-top: 10px; }
-    #profile-form input:disabled { background: #eee; }
+    .product, .rental { border: 1px solid #ccc; padding: 10px; border-radius: 8px; background: #fff; margin-bottom: 10px; }
+    .product img, .rental img { max-width: 100%; border-radius: 6px; }
   </style>
 </head>
 <body>
@@ -33,37 +31,36 @@
 
 <div class="section active" id="home">
   <div class="card">
-    <h2 style="font-style: italic; text-align: center;">Ảnh Viện Áo Cưới Nguyễn Thành - NVT Group</h2>
-    <input type="text" id="login-username" placeholder="Tên đăng nhập">
-    <input type="password" id="login-pass" placeholder="Mật khẩu">
-    <button onclick="login()">Đăng nhập</button>
-  </div>
-  <div class="card" id="register-card" style="display:none">
-    <h2>Đăng ký</h2>
-    <input type="text" id="register-username" placeholder="Tên đăng nhập">
-    <input type="password" id="register-password" placeholder="Mật khẩu">
-    <button onclick="registerUser()">Đăng ký</button>
+    <h2 style="font-style: italic; color: #cc0066; text-align: center;">ẢNH VIỆN ÁO CƯỚI NGUYỄN THÀNH - NVT Group</h2>
+    <div id="form-login">
+      <h3>Đăng Nhập</h3>
+      <input type="text" id="login-user" placeholder="Tên đăng nhập">
+      <input type="password" id="login-pass" placeholder="Mật khẩu">
+      <button onclick="login()">Đăng nhập</button>
+      <p>Bạn chưa có tài khoản? <a href="#" onclick="showRegister()">Đăng ký ngay</a></p>
+    </div>
+    <div id="form-register" style="display:none;">
+      <h3>Đăng Ký Người Dùng</h3>
+      <input type="text" id="reg-user" placeholder="Tên đăng nhập">
+      <input type="password" id="reg-pass" placeholder="Mật khẩu">
+      <button onclick="register()">Đăng ký</button>
+      <p>Đã có tài khoản? <a href="#" onclick="hideRegister()">Đăng nhập</a></p>
+    </div>
   </div>
 </div>
 
 <div class="section" id="home-after-login">
   <div class="card">
-    <h2>Chào mừng <span id="current-user"></span>!</h2>
-    <button onclick="showSection('tao-thiep')">💌 Tạo Thiệp Cưới</button>
-    <button onclick="showSection('mua-qua')">🎁 Mua Quà</button>
-    <button onclick="showSection('thue-do')">🧥 Thuê Đồ</button>
-    <button onclick="showSection('don-hang')">📦 Xem Đơn Hàng</button>
-    <button onclick="showSection('ho-so')">👤 Hồ sơ</button>
+    <h2>Chào mừng!</h2>
   </div>
 </div>
 
 <div class="section" id="tao-thiep">
   <div class="card">
     <h2>Tạo Thiệp Cưới</h2>
-    <input placeholder="Tên cô dâu & chú rể">
-    <textarea placeholder="Lời mời"></textarea>
-    <button>Tạo thiệp & Lưu ảnh</button>
-    <button>Gửi qua Messenger/Zalo</button>
+    <textarea id="loi-moi" placeholder="Nhập lời mời cưới tại đây..."></textarea>
+    <button onclick="taoThiep()">Tạo Thiệp</button>
+    <div id="thiep-ket-qua"></div>
   </div>
 </div>
 
@@ -104,56 +101,19 @@
 
 <div class="section" id="ho-so">
   <div class="card">
-    <h2>Hồ sơ người dùng</h2>
-    <div id="profile-form">
-      <input id="profile-username" placeholder="Tên đăng nhập" disabled>
-      <input id="profile-bank" placeholder="Số tài khoản ngân hàng" disabled>
-      <button onclick="enableProfileEdit()">Thay đổi</button>
-      <button onclick="saveProfile()">Lưu</button>
-    </div>
+    <h2>Hồ Sơ Cá Nhân</h2>
+    <input id="ten-ho-so" placeholder="Tên của bạn">
+    <input id="stk-ho-so" placeholder="Số tài khoản ngân hàng">
+    <button onclick="capNhatHoSo()">Cập nhật hồ sơ</button>
   </div>
 </div>
 
 <script>
-let users = JSON.parse(localStorage.getItem('users')) || { 'anhthanh': '123' };
-let currentUser = '';
-let profiles = JSON.parse(localStorage.getItem('profiles')) || {};
-
-function registerUser() {
-  const u = document.getElementById('register-username').value;
-  const p = document.getElementById('register-password').value;
-  if (u && p) {
-    users[u] = p;
-    localStorage.setItem('users', JSON.stringify(users));
-    alert('Đăng ký thành công!');
-    document.getElementById('register-card').style.display = 'none';
-  }
-}
-
-function login() {
-  const u = document.getElementById('login-username').value;
-  const p = document.getElementById('login-pass').value;
-  if (users[u] && users[u] === p) {
-    currentUser = u;
-    document.getElementById('current-user').innerText = u;
-    document.getElementById('main-nav').style.display = 'flex';
-    showSection('home-after-login');
-  } else {
-    alert('Sai tài khoản hoặc mật khẩu.');
-  }
-}
-
-function enableProfileEdit() {
-  document.getElementById('profile-bank').disabled = false;
-}
-
-function saveProfile() {
-  const bank = document.getElementById('profile-bank').value;
-  profiles[currentUser] = { username: currentUser, bank };
-  localStorage.setItem('profiles', JSON.stringify(profiles));
-  alert('Đã lưu hồ sơ');
-  document.getElementById('profile-bank').disabled = true;
-}
+let currentUser = null;
+let users = JSON.parse(localStorage.getItem("users")) || {};
+let sanPham = JSON.parse(localStorage.getItem('sanPham')) || [];
+let thueDo = JSON.parse(localStorage.getItem('thueDo')) || [];
+let donHang = JSON.parse(localStorage.getItem('donHang')) || [];
 
 function showSection(id) {
   document.querySelectorAll('.section').forEach(el => el.classList.remove('active'));
@@ -161,16 +121,49 @@ function showSection(id) {
   if (id === 'mua-qua') hienThiSanPham();
   if (id === 'thue-do') hienThiThueDo();
   if (id === 'don-hang') hienThiDonHang();
-  if (id === 'ho-so') loadProfile();
+  if (id === 'ho-so') hienThiHoSo();
 }
 
-function loadProfile() {
-  const data = profiles[currentUser] || {};
-  document.getElementById('profile-username').value = currentUser;
-  document.getElementById('profile-bank').value = data.bank || '';
+function showRegister() {
+  document.getElementById('form-login').style.display = 'none';
+  document.getElementById('form-register').style.display = 'block';
 }
 
-// Giữ nguyên các hàm loadImage, luuSanPham, hienThiSanPham, luuThueDo, hienThiThueDo, xacNhanMua, xacNhanThue, hienThiDonHang và sửa hàm hienThiSanPham để thêm nút xóa nếu là admin
+function hideRegister() {
+  document.getElementById('form-register').style.display = 'none';
+  document.getElementById('form-login').style.display = 'block';
+}
+
+function register() {
+  const user = document.getElementById("reg-user").value.trim();
+  const pass = document.getElementById("reg-pass").value.trim();
+  if (!user || !pass) return alert("Vui lòng nhập đầy đủ.");
+  if (user === "anhthanh") return alert("Không thể đăng ký tên này.");
+  if (users[user]) return alert("Tài khoản đã tồn tại.");
+  users[user] = { password: pass, name: user, bank: "" };
+  localStorage.setItem("users", JSON.stringify(users));
+  alert("Đăng ký thành công.");
+  hideRegister();
+}
+
+function login() {
+  const user = document.getElementById("login-user").value.trim();
+  const pass = document.getElementById("login-pass").value.trim();
+  if (user === "anhthanh" && pass === "123") {
+    currentUser = "admin";
+    document.getElementById("main-nav").style.display = "flex";
+    showSection("home-after-login");
+    return alert("Đăng nhập admin thành công!");
+  }
+  if (users[user] && users[user].password === pass) {
+    currentUser = user;
+    document.getElementById("main-nav").style.display = "flex";
+    showSection("home-after-login");
+    return alert("Đăng nhập thành công!");
+  }
+  alert("Sai tài khoản hoặc mật khẩu.");
+}
+
 function hienThiSanPham() {
   const ds = document.getElementById('danh-sach-san-pham');
   ds.innerHTML = '';
@@ -183,21 +176,114 @@ function hienThiSanPham() {
         <input placeholder="SĐT" id="sdt-khach-${i}" />
         <input placeholder="Địa chỉ" id="dc-khach-${i}" />
         <button onclick="xacNhanMua(${i})">🛒 Mua</button>
-        ${currentUser === 'anhthanh' ? `<button class='admin-only' onclick="xoaSanPham(${i})">🗑️ Xoá</button>` : ''}
+        ${currentUser === 'admin' ? `<button onclick="xoaSanPham(${i})">❌ Xóa</button>` : ''}
       </div>`;
   });
 }
 
-function xoaSanPham(i) {
-  sanPham.splice(i, 1);
-  localStorage.setItem('sanPham', JSON.stringify(sanPham));
-  hienThiSanPham();
+function hienThiThueDo() {
+  const ds = document.getElementById('danh-sach-thue');
+  ds.innerHTML = '';
+  thueDo.forEach((sp, i) => {
+    ds.innerHTML += `
+      <div class='rental'>
+        <img src="${sp.img}" />
+        <p><strong>${sp.ten}</strong> - ${sp.gia}đ</p>
+        <input placeholder="Tên bạn" id="ten-thue-${i}" />
+        <input placeholder="SĐT" id="sdt-thue-${i}" />
+        <input placeholder="Địa chỉ" id="dc-thue-${i}" />
+        <button onclick="xacNhanThue(${i})">🛒 Thuê</button>
+      </div>`;
+  });
 }
 
-// Biến toàn cục để giữ dữ liệu
-let sanPham = JSON.parse(localStorage.getItem('sanPham')) || [];
-let thueDo = JSON.parse(localStorage.getItem('thueDo')) || [];
-let donHang = JSON.parse(localStorage.getItem('donHang')) || [];
+function loadImage(event, key) {
+  const reader = new FileReader();
+  reader.onload = () => localStorage.setItem(key, reader.result);
+  reader.readAsDataURL(event.target.files[0]);
+}
+
+function luuSanPham() {
+  const ten = document.getElementById('ten-sp').value;
+  const gia = document.getElementById('gia-sp').value;
+  const img = localStorage.getItem('sp-img');
+  if (ten && gia && img) {
+    sanPham.push({ ten, gia, img });
+    localStorage.setItem('sanPham', JSON.stringify(sanPham));
+    hienThiSanPham();
+  }
+}
+
+function xoaSanPham(i) {
+  if (confirm("Bạn chắc chắn muốn xóa?")) {
+    sanPham.splice(i, 1);
+    localStorage.setItem('sanPham', JSON.stringify(sanPham));
+    hienThiSanPham();
+  }
+}
+
+function xacNhanMua(i) {
+  const ten = document.getElementById(`ten-khach-${i}`).value;
+  const sdt = document.getElementById(`sdt-khach-${i}`).value;
+  const dc = document.getElementById(`dc-khach-${i}`).value;
+  if (ten && sdt && dc) {
+    donHang.push({ ...sanPham[i], ten, sdt, dc, loai: 'Mua' });
+    localStorage.setItem('donHang', JSON.stringify(donHang));
+    alert('Đã mua thành công!');
+  } else {
+    alert('Vui lòng nhập đầy đủ thông tin.');
+  }
+}
+
+function xacNhanThue(i) {
+  const ten = document.getElementById(`ten-thue-${i}`).value;
+  const sdt = document.getElementById(`sdt-thue-${i}`).value;
+  const dc = document.getElementById(`dc-thue-${i}`).value;
+  if (ten && sdt && dc) {
+    donHang.push({ ...thueDo[i], ten, sdt, dc, loai: 'Thuê' });
+    localStorage.setItem('donHang', JSON.stringify(donHang));
+    alert('Thuê thành công!');
+  } else {
+    alert('Vui lòng nhập đầy đủ thông tin.');
+  }
+}
+
+function hienThiDonHang() {
+  const ds = document.getElementById('don-hang-list');
+  ds.innerHTML = '';
+  if (donHang.length === 0) ds.innerHTML = '<p>Chưa có đơn hàng nào.</p>';
+  donHang.forEach((don, i) => {
+    ds.innerHTML += `
+      <div class='card'>
+        <p><strong>${don.loai}:</strong> ${don.ten} - ${don.gia}đ</p>
+        <p>Khách: ${don.ten} | ${don.sdt} | ${don.dc}</p>
+      </div>`;
+  });
+}
+
+function hienThiHoSo() {
+  if (currentUser && users[currentUser]) {
+    document.getElementById('ten-ho-so').value = users[currentUser].name || '';
+    document.getElementById('stk-ho-so').value = users[currentUser].bank || '';
+  }
+}
+
+function capNhatHoSo() {
+  const name = document.getElementById('ten-ho-so').value;
+  const bank = document.getElementById('stk-ho-so').value;
+  if (currentUser && users[currentUser]) {
+    users[currentUser].name = name;
+    users[currentUser].bank = bank;
+    localStorage.setItem("users", JSON.stringify(users));
+    alert("Cập nhật hồ sơ thành công.");
+  }
+}
+
+function taoThiep() {
+  const loiMoi = document.getElementById('loi-moi').value;
+  const box = document.getElementById('thiep-ket-qua');
+  box.innerHTML = `<div class='card' style='text-align:center; font-style:italic;'>${loiMoi}</div>`;
+}
 </script>
 </body>
 </html>
