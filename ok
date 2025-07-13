@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Thiệp Cưới & Shop Mini</title>
+  <style>
+    body { font-family: Arial, sans-serif; background: #ffe4ec; margin: 0; padding: 0; }
+    nav { background: #ffb6c1; padding: 10px; display: none; justify-content: space-around; position: sticky; top: 0; z-index: 10; }
+    nav a { text-decoration: none; color: #333; font-weight: bold; }
+    .section { padding: 20px; display: none; }
+    .active { display: block; }
+    .form-group { margin-bottom: 10px; }
+    input, textarea { width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px; margin: 5px 0; }
+    button { padding: 10px 20px; border: none; background: #ff69b4; color: white; border-radius: 5px; cursor: pointer; }
+    .card { background: #fff; padding: 20px; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); margin-bottom: 20px; }
+    .product, .rental { border: 1px solid #ccc; padding: 10px; border-radius: 8px; background: #fff; margin-bottom: 10px; }
+    .product img, .rental img { max-width: 100%; border-radius: 6px; }
+  </style>
+</head>
+<body>
+
+<nav id="main-nav">
+  <a href="#" onclick="showSection('home-after-login')">🏠 Trang chủ</a>
+  <a href="#" onclick="showSection('tao-thiep')">💌 Thiệp Cưới</a>
+  <a href="#" onclick="showSection('mua-qua')">🎁 Mua Quà</a>
+  <a href="#" onclick="showSection('thue-do')">🧥 Thuê Đồ</a>
+  <a href="#" onclick="showSection('don-hang')">📦 Đơn Hàng</a>
+</nav>
+
+<div class="section active" id="home">
+  <div class="card">
+    <h2>Đăng Nhập</h2>
+    <input type="email" id="login-email" placeholder="Email">
+    <input type="password" id="login-pass" placeholder="Mật khẩu">
+    <button onclick="login()">Đăng nhập</button>
+  </div>
+</div>
+
+<div class="section" id="home-after-login">
+  <div class="card">
+    <h2>Chào mừng!</h2>
+    <button onclick="showSection('tao-thiep')">💌 Tạo Thiệp Cưới</button>
+    <button onclick="showSection('mua-qua')">🎁 Mua Quà</button>
+    <button onclick="showSection('thue-do')">🧥 Thuê Đồ</button>
+    <button onclick="showSection('don-hang')">📦 Xem Đơn Hàng</button>
+  </div>
+</div>
+
+<div class="section" id="tao-thiep">
+  <div class="card">
+    <h2>Tạo Thiệp Cưới</h2>
+    <p>Phần tạo thiệp sẽ được cập nhật thêm.</p>
+  </div>
+</div>
+
+<div class="section" id="mua-qua">
+  <div class="card">
+    <h2>Quản lý sản phẩm</h2>
+    <input type="file" onchange="loadImage(event, 'sp-img')">
+    <input id="ten-sp" placeholder="Tên sản phẩm">
+    <input id="gia-sp" placeholder="Giá">
+    <button onclick="luuSanPham()">Thêm sản phẩm</button>
+  </div>
+  <div class="card">
+    <h3>Sản phẩm hiện có</h3>
+    <div id="danh-sach-san-pham"></div>
+  </div>
+</div>
+
+<div class="section" id="thue-do">
+  <div class="card">
+    <h2>Quản lý thuê đồ</h2>
+    <input type="file" onchange="loadImage(event, 'thue-img')">
+    <input id="ten-thue" placeholder="Tên đồ thuê">
+    <input id="gia-thue" placeholder="Giá thuê">
+    <button onclick="luuThueDo()">Thêm đồ thuê</button>
+  </div>
+  <div class="card">
+    <h3>Đồ thuê hiện có</h3>
+    <div id="danh-sach-thue"></div>
+  </div>
+</div>
+
+<div class="section" id="don-hang">
+  <div class="card">
+    <h2>Đơn hàng & Thuê</h2>
+    <div id="don-hang-list"></div>
+  </div>
+</div>
+
+<script>
+let sanPham = JSON.parse(localStorage.getItem('sanPham')) || [];
+let thueDo = JSON.parse(localStorage.getItem('thueDo')) || [];
+let donHang = JSON.parse(localStorage.getItem('donHang')) || [];
+
+function showSection(id) {
+  document.querySelectorAll('.section').forEach(el => el.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  if (id === 'mua-qua') hienThiSanPham();
+  if (id === 'thue-do') hienThiThueDo();
+  if (id === 'don-hang') hienThiDonHang();
+}
+
+function login() {
+  document.getElementById('main-nav').style.display = 'flex';
+  showSection('home-after-login');
+}
+
+function loadImage(event, key) {
+  const reader = new FileReader();
+  reader.onload = () => localStorage.setItem(key, reader.result);
+  reader.readAsDataURL(event.target.files[0]);
+}
+
+function luuSanPham() {
+  const ten = document.getElementById('ten-sp').value;
+  const gia = document.getElementById('gia-sp').value;
+  const img = localStorage.getItem('sp-img');
+  if (ten && gia && img) {
+    sanPham.push({ ten, gia, img });
+    localStorage.setItem('sanPham', JSON.stringify(sanPham));
+    hienThiSanPham();
+  }
+}
+
+function hienThiSanPham() {
+  const ds = document.getElementById('danh-sach-san-pham');
+  ds.innerHTML = '';
+  sanPham.forEach((sp, i) => {
+    ds.innerHTML += `
+      <div class='product'>
+        <img src="${sp.img}" />
+        <p><strong>${sp.ten}</strong> - ${sp.gia}đ</p>
+        <input placeholder="Tên bạn" id="ten-khach-${i}" />
+        <input placeholder="SĐT" id="sdt-khach-${i}" />
+        <input placeholder="Địa chỉ" id="dc-khach-${i}" />
+        <button onclick="xacNhanMua(${i})">🛒 Mua</button>
+      </div>`;
+  });
+}
+
+function xacNhanMua(i) {
+  const ten = document.getElementById(`ten-khach-${i}`).value;
+  const sdt = document.getElementById(`sdt-khach-${i}`).value;
+  const dc = document.getElementById(`dc-khach-${i}`).value;
+  if (ten && sdt && dc) {
+    donHang.push({ ...sanPham[i], ten, sdt, dc, loai: 'Mua' });
+    localStorage.setItem('donHang', JSON.stringify(donHang));
+    alert('Đã mua thành công!');
+  } else {
+    alert('Vui lòng nhập đầy đủ thông tin.');
+  }
+}
+
+function luuThueDo() {
+  const ten = document.getElementById('ten-thue').value;
+  const gia = document.getElementById('gia-thue').value;
+  const img = localStorage.getItem('thue-img');
+  if (ten && gia && img) {
+    thueDo.push({ ten, gia, img });
+    localStorage.setItem('thueDo', JSON.stringify(thueDo));
+    hienThiThueDo();
+  }
+}
+
+function hienThiThueDo() {
+  const ds = document.getElementById('danh-sach-thue');
+  ds.innerHTML = '';
+  thueDo.forEach((sp, i) => {
+    ds.innerHTML += `
+      <div class='rental'>
+        <img src="${sp.img}" />
+        <p><strong>${sp.ten}</strong> - ${sp.gia}đ</p>
+        <input placeholder="Tên bạn" id="ten-thue-${i}" />
+        <input placeholder="SĐT" id="sdt-thue-${i}" />
+        <input placeholder="Địa chỉ" id="dc-thue-${i}" />
+        <button onclick="xacNhanThue(${i})">🛒 Thuê</button>
+      </div>`;
+  });
+}
+
+function xacNhanThue(i) {
+  const ten = document.getElementById(`ten-thue-${i}`).value;
+  const sdt = document.getElementById(`sdt-thue-${i}`).value;
+  const dc = document.getElementById(`dc-thue-${i}`).value;
+  if (ten && sdt && dc) {
+    donHang.push({ ...thueDo[i], ten, sdt, dc, loai: 'Thuê' });
+    localStorage.setItem('donHang', JSON.stringify(donHang));
+    alert('Thuê thành công!');
+  } else {
+    alert('Vui lòng nhập đầy đủ thông tin.');
+  }
+}
+
+function hienThiDonHang() {
+  const ds = document.getElementById('don-hang-list');
+  ds.innerHTML = '';
+  if (donHang.length === 0) ds.innerHTML = '<p>Chưa có đơn hàng nào.</p>';
+  donHang.forEach((don, i) => {
+    ds.innerHTML += `
+      <div class='card'>
+        <p><strong>${don.loai}:</strong> ${don.ten} - ${don.gia}đ</p>
+        <p>Khách: ${don.ten} | ${don.sdt} | ${don.dc}</p>
+      </div>`;
+  });
+}
+</script>
+</body>
+</html>
