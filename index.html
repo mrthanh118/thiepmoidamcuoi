@@ -14,16 +14,18 @@
     label { display: block; margin-bottom: 5px; }
     input, select, textarea { width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px; }
     .card { background: #fff; padding: 20px; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
-    #thiep-preview { margin-top: 20px; padding: 20px; border: 2px dashed #d63384; background: #fff0f5; }
+    #thiep-preview { margin-top: 20px; padding: 20px; border: 2px dashed #d63384; background: #fff0f5; text-align: center; }
     .product { border: 1px solid #ccc; padding: 10px; margin-bottom: 10px; border-radius: 8px; background: #fff; }
     .product img { max-width: 100%; border-radius: 6px; }
+    #home-after-login { display: none; flex-direction: column; gap: 10px; }
+    #home-after-login button { padding: 15px; font-size: 18px; border: none; background: #ff69b4; color: white; border-radius: 10px; cursor: pointer; }
   </style>
 </head>
 <body>
 
 <!-- Navigation -->
 <nav id="main-nav">
-  <a href="#" onclick="showSection('home')">🏠 Home</a>
+  <a href="#" onclick="showSection('home-after-login')">🏠 Home</a>
   <a href="#" onclick="showSection('tao-thiep')">💌 Tạo Thiệp Cưới</a>
   <a href="#" onclick="showSection('mua-qua')">🎁 Mua Quà</a>
   <a href="#" onclick="showSection('thue-do')">🧥 Thuê Đồ</a>
@@ -31,6 +33,19 @@
   <a href="#" onclick="showSection('ho-so')">👤 Hồ Sơ</a>
   <a href="#" onclick="showSection('tien-mung')">💸 Gửi Tiền Mừng</a>
 </nav>
+
+<!-- Trang HOME sau đăng nhập -->
+<div class="section" id="home-after-login">
+  <div class="card">
+    <h2>Chức năng</h2>
+    <button onclick="showSection('tao-thiep')">💌 Tạo Thiệp Cưới</button>
+    <button onclick="showSection('mua-qua')">🎁 Mua Quà</button>
+    <button onclick="showSection('thue-do')">🧥 Thuê Đồ</button>
+    <button onclick="showSection('nhan-tin')">💬 Nhắn Tin</button>
+    <button onclick="showSection('ho-so')">👤 Hồ Sơ</button>
+    <button onclick="showSection('tien-mung')">💸 Gửi Tiền Mừng</button>
+  </div>
+</div>
 
 <!-- Đăng nhập / Đăng ký -->
 <div class="section active" id="home">
@@ -97,7 +112,7 @@
     </div>
     <div class="form-group">
       <label>Kích thước chữ:</label>
-      <input type="number" id="co-chu" value="16">
+      <input type="number" id="co-chu" value="18">
     </div>
     <div class="form-group">
       <label>Màu sắc:</label>
@@ -116,9 +131,15 @@
       <img src="https://via.placeholder.com/200" alt="Gift">
       <p>Tên quà: Hộp quà cưới sang trọng</p>
       <p>Giá: 500,000 VND</p>
-      <button>Thêm vào giỏ</button>
+      <button onclick="muaHang('Hộp quà cưới sang trọng')">Mua</button>
     </div>
-    <!-- Có thể thêm nhiều sản phẩm khác ở đây -->
+    <div id="form-mua" style="display:none">
+      <h3>Thông tin nhận hàng</h3>
+      <input placeholder="Tên người nhận">
+      <input placeholder="Số điện thoại">
+      <input placeholder="Địa chỉ">
+      <button onclick="alert('Đặt hàng thành công!')">Xác nhận</button>
+    </div>
   </div>
 </div>
 
@@ -155,6 +176,14 @@
       <label>Tìm bạn:</label>
       <input type="text" placeholder="Nhập tên thành viên">
     </div>
+    <div class="form-group">
+      <label>Bạn bè:</label>
+      <ul>
+        <li>Lan Nguyễn</li>
+        <li>Minh Trần</li>
+        <li>Hoàng Lê</li>
+      </ul>
+    </div>
   </div>
 </div>
 
@@ -179,7 +208,7 @@
 
   function login() {
     document.getElementById('main-nav').style.display = 'flex';
-    showSection('tao-thiep');
+    showSection('home-after-login');
   }
 
   function taoThiep() {
@@ -192,21 +221,29 @@
     const color = document.getElementById('mau-sac').value;
 
     const thiep = `
-      <div style="font-family:${font}; font-size:${size}; color:${color};">
+      <div style="font-family:${font}; font-size:${size}; color:${color}; max-width: 400px; margin: auto;">
         <h2>💒 Thiệp Mời</h2>
-        <p>Trân trọng kính mời ${khachMoi}</p>
-        <p>Đến dự lễ cưới của ${coDau} ❤️ và ${chuRe}</p>
-        <p>Địa điểm: ${diaDiem}</p>
+        <p>Trân trọng kính mời <strong>${khachMoi}</strong></p>
+        <p>Đến dự lễ cưới của <strong>${coDau}</strong> ❤️ và <strong>${chuRe}</strong></p>
+        <p>📍 ${diaDiem}</p>
         <p>❤️ Hân hạnh đón tiếp! 🕊️</p>
-        <button onclick="taiAnh()">Tải về ảnh</button>
-        <button onclick="alert('Chia sẻ qua Messenger/Zalo (demo)')">Chia sẻ</button>
+        <button onclick="taiAnh()">📥 Tải về ảnh</button>
+        <button onclick="shareThiep()">📤 Chia sẻ</button>
       </div>
     `;
     document.getElementById('thiep-preview').innerHTML = thiep;
   }
 
   function taiAnh() {
-    alert("Chức năng tải ảnh sẽ được tích hợp thêm bằng thư viện HTML2Canvas hoặc tương đương!");
+    alert("Tính năng tải ảnh sẽ được tích hợp (HTML2Canvas hoặc tương tự).");
+  }
+
+  function shareThiep() {
+    alert("Thực tế có thể chia sẻ qua Messenger, Facebook, Zalo nếu dùng Web Share API hoặc SDK xã hội.");
+  }
+
+  function muaHang(sp) {
+    document.getElementById('form-mua').style.display = 'block';
   }
 </script>
 
