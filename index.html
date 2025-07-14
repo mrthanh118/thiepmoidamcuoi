@@ -3,177 +3,167 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Thiệp Cưới & Cửa Hàng Mini</title>
+  <title>Thiệp Cưới & Shop Mini</title>
   <style>
-    body {
-      font-family: 'Segoe UI', sans-serif;
-      background-color: #fff0f5;
-      margin: 0;
-      padding: 0;
-    }
-    header {
-      background-color: #ff69b4;
-      color: white;
-      padding: 20px;
-      text-align: center;
-    }
-    nav {
-      display: none;
-      background: #ffc0cb;
-      padding: 10px;
-      display: flex;
-      justify-content: center;
-      gap: 15px;
-      position: sticky;
-      top: 0;
-      z-index: 999;
-    }
-    nav a {
-      color: #333;
-      text-decoration: none;
-      font-weight: bold;
-      padding: 6px 12px;
-      border-radius: 6px;
-      background: white;
-    }
-    .section {
-      display: none;
-      padding: 20px;
-    }
-    .active {
-      display: block;
-    }
-    .card {
-      background: white;
-      padding: 20px;
-      margin-bottom: 20px;
-      border-radius: 10px;
-      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-    }
-    .form-group {
-      margin-bottom: 15px;
-    }
-    input, select, textarea {
-      width: 100%;
-      padding: 10px;
-      margin-top: 5px;
-      border-radius: 5px;
-      border: 1px solid #ccc;
-    }
-    button {
-      padding: 10px 20px;
-      background: #ff69b4;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-    .product, .rental {
-      border: 1px solid #ccc;
-      padding: 10px;
-      border-radius: 10px;
-      margin-bottom: 15px;
-      display: flex;
-      gap: 10px;
-      background: #fff;
-    }
-    .product img, .rental img {
-      width: 80px;
-      height: 100px;
-      object-fit: cover;
-      border-radius: 5px;
-    }
-    #invitation-preview {
-      text-align: center;
-      border: 2px dashed #ccc;
-      padding: 20px;
-      background: white;
-      margin-top: 20px;
-      font-size: 18px;
-    }
+    * { box-sizing: border-box; }
+    body { font-family: 'Segoe UI', sans-serif; margin: 0; padding: 0; background: #fff0f5; }
+    nav { display: none; background: #ff69b4; padding: 10px; position: sticky; top: 0; z-index: 10; justify-content: space-around; }
+    nav a { color: white; text-decoration: none; font-weight: bold; }
+    .section { display: none; padding: 20px; }
+    .active { display: block; }
+    .card { background: white; padding: 20px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); margin-bottom: 20px; }
+    input, select, textarea { width: 100%; padding: 8px; margin-top: 5px; border-radius: 5px; border: 1px solid #ccc; }
+    button { padding: 10px 20px; background: #ff69b4; color: white; border: none; border-radius: 5px; cursor: pointer; margin-top: 10px; }
+    img.product-img { width: 100px; height: 100px; object-fit: cover; border-radius: 8px; }
+    .product, .rental { display: flex; gap: 10px; align-items: center; margin-bottom: 10px; }
   </style>
 </head>
 <body>
-<header>
-  <h1>Thiệp Cưới & Shop Mini</h1>
-</header>
-<nav id="menu-nav">
-  <a href="#" onclick="showSection('home')">Trang chủ</a>
+
+<nav id="main-nav">
+  <a href="#" onclick="showSection('home-after-login')">Trang chủ</a>
   <a href="#" onclick="showSection('tao-thiep')">Thiệp cưới</a>
-  <a href="#" onclick="showSection('shop')">Mua quà</a>
-  <a href="#" onclick="showSection('thue')">Thuê đồ</a>
-  <a href="#" onclick="showSection('donhang')">Đơn hàng</a>
+  <a href="#" onclick="showSection('mua-qua')">Mua quà</a>
+  <a href="#" onclick="showSection('thue-do')">Thuê đồ</a>
+  <a href="#" onclick="showSection('don-hang')">Đơn hàng</a>
 </nav>
 
-<div id="home" class="section active">
+<div class="section active" id="home">
   <div class="card">
-    <h2>Đăng nhập</h2>
-    <div class="form-group">
-      <input type="text" id="loginUser" placeholder="Tên đăng nhập">
-    </div>
-    <div class="form-group">
-      <input type="password" id="loginPass" placeholder="Mật khẩu">
-    </div>
+    <h2>Đăng Nhập</h2>
+    <input type="text" id="login-user" placeholder="Tên đăng nhập">
+    <input type="password" id="login-pass" placeholder="Mật khẩu">
     <button onclick="login()">Đăng nhập</button>
     <p>Chưa có tài khoản? <a href="#" onclick="showSection('register')">Đăng ký</a></p>
   </div>
 </div>
 
-<div id="register" class="section">
+<div class="section" id="register">
   <div class="card">
-    <h2>Đăng ký</h2>
-    <div class="form-group">
-      <input type="text" id="regUser" placeholder="Tên đăng nhập">
-    </div>
-    <div class="form-group">
-      <input type="password" id="regPass" placeholder="Mật khẩu">
-    </div>
-    <button onclick="register()">Tạo tài khoản</button>
-    <p>Đã có tài khoản? <a href="#" onclick="showSection('home')">Đăng nhập</a></p>
+    <h2>Đăng ký tài khoản</h2>
+    <input type="text" id="reg-user" placeholder="Tên đăng nhập">
+    <input type="email" id="reg-email" placeholder="Email">
+    <input type="password" id="reg-pass" placeholder="Mật khẩu">
+    <input type="password" id="reg-pass2" placeholder="Nhập lại mật khẩu">
+    <button onclick="register()">Đăng ký</button>
   </div>
 </div>
 
-<div id="tao-thiep" class="section">
+<div class="section" id="home-after-login">
   <div class="card">
-    <h2>Tạo thiệp cưới</h2>
-    <div class="form-group">
-      <input id="coDau" placeholder="Tên cô dâu">
-    </div>
-    <div class="form-group">
-      <input id="chuRe" placeholder="Tên chú rể">
-    </div>
-    <div class="form-group">
-      <input id="diaDiem" placeholder="Địa điểm">
-    </div>
-    <div class="form-group">
-      <input id="ngayGio" type="datetime-local">
-    </div>
-    <div class="form-group">
-      <input id="tenKhachMoi" placeholder="Tên khách mời">
-    </div>
-    <div class="form-group">
-      <select id="mauThiep">
-        <option>Hồng</option>
-        <option>Xanh</option>
-        <option>Vàng</option>
-      </select>
-    </div>
-    <div class="form-group">
-      <select id="fontChu">
-        <option value="Arial">Arial</option>
-        <option value="Georgia">Georgia</option>
-        <option value="Tahoma">Tahoma</option>
-      </select>
-    </div>
-    <div class="form-group">
-      <input type="number" id="coChu" value="18" placeholder="Cỡ chữ (px)">
-    </div>
-    <button onclick="taoThiep()">Xem thiệp</button>
-    <button onclick="taiThiep()">Lưu thiệp</button>
-    <div id="invitation-preview"></div>
+    <h2>Chào mừng <span id="current-user"></span></h2>
+    <p>Chọn chức năng ở menu trên.</p>
   </div>
 </div>
 
-<!-- Các phần khác như Shop, Thuê đồ, Đơn hàng, JavaScript tiếp tục bên dưới... -->
+<div class="section" id="tao-thiep">
+  <div class="card">
+    <h2>Tạo Thiệp Cưới</h2>
+    <input id="co-dau" placeholder="Tên cô dâu">
+    <input id="chu-re" placeholder="Tên chú rể">
+    <input id="dia-diem" placeholder="Địa điểm tổ chức">
+    <input type="datetime-local" id="ngay-gio">
+    <input id="ten-khach-moi" placeholder="Kính mời">
+    <select id="mau-thiep">
+      <option>Hồng</option><option>Xanh</option><option>Vàng</option>
+    </select>
+    <select id="font-chu">
+      <option value="Arial">Arial</option>
+      <option value="Georgia">Georgia</option>
+      <option value="Courier New">Courier New</option>
+    </select>
+    <input type="number" id="size-chu" placeholder="Cỡ chữ (px)" value="18">
+    <button onclick="taoThiepMoi()">Xem Thiệp</button>
+    <button onclick="taiThiep()">Lưu Thiệp</button>
+    <div id="invitation-preview" style="margin-top: 20px;"></div>
+  </div>
+</div>
+
+<div class="section" id="mua-qua">
+  <div class="card" id="admin-add-product" style="display:none">
+    <h3>Thêm Sản phẩm (Admin)</h3>
+    <input type="file" id="sp-img">
+    <input id="ten-sp" placeholder="Tên sản phẩm">
+    <input id="gia-sp" placeholder="Giá">
+    <textarea id="mo-ta-sp" placeholder="Mô tả"></textarea>
+    <button onclick="themSanPham()">Thêm sản phẩm</button>
+  </div>
+  <div class="card">
+    <h3>Sản phẩm</h3>
+    <div id="danh-sach-san-pham"></div>
+  </div>
+</div>
+
+<div class="section" id="thue-do">
+  <div class="card" id="admin-add-rental" style="display:none">
+    <h3>Thêm Đồ Thuê (Admin)</h3>
+    <input type="file" id="thue-img">
+    <input id="ten-thue" placeholder="Tên đồ thuê">
+    <input id="gia-thue" placeholder="Giá thuê">
+    <textarea id="mo-ta-thue" placeholder="Mô tả"></textarea>
+    <button onclick="themThueDo()">Thêm đồ thuê</button>
+  </div>
+  <div class="card">
+    <h3>Danh sách đồ thuê</h3>
+    <div id="danh-sach-thue"></div>
+  </div>
+</div>
+
+<div class="section" id="don-hang">
+  <div class="card">
+    <h3>Đơn hàng</h3>
+    <div id="don-hang-list"></div>
+  </div>
+</div>
+
+<script>
+let currentUser = null;
+let isAdmin = false;
+const adminAccount = { user: 'anhthanh', pass: '123456' };
+
+function showSection(id) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+function login() {
+  const user = document.getElementById('login-user').value;
+  const pass = document.getElementById('login-pass').value;
+  const regUsers = JSON.parse(localStorage.getItem('users')) || [];
+  const matched = regUsers.find(u => u.user === user && u.pass === pass);
+
+  if (user === adminAccount.user && pass === adminAccount.pass) {
+    currentUser = user;
+    isAdmin = true;
+  } else if (matched) {
+    currentUser = user;
+    isAdmin = false;
+  } else {
+    alert('Sai tài khoản hoặc mật khẩu');
+    return;
+  }
+
+  document.getElementById('main-nav').style.display = 'flex';
+  document.getElementById('current-user').innerText = currentUser;
+  document.getElementById('admin-add-product').style.display = isAdmin ? 'block' : 'none';
+  document.getElementById('admin-add-rental').style.display = isAdmin ? 'block' : 'none';
+  showSection('home-after-login');
+  hienThiSanPham();
+  hienThiThueDo();
+}
+
+function register() {
+  const user = document.getElementById('reg-user').value;
+  const email = document.getElementById('reg-email').value;
+  const pass = document.getElementById('reg-pass').value;
+  const pass2 = document.getElementById('reg-pass2').value;
+  if (pass !== pass2) return alert('Mật khẩu không khớp');
+  const users = JSON.parse(localStorage.getItem('users')) || [];
+  users.push({ user, email, pass });
+  localStorage.setItem('users', JSON.stringify(users));
+  alert('Đăng ký thành công');
+  showSection('home');
+}
+</script>
 </body>
 </html>
