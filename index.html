@@ -3,33 +3,35 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Ứng Dụng Thiệp Cưới & Cửa Hàng</title>
+  <title>Thiệp Cưới & Shop Mini</title>
   <style>
-    body { font-family: Arial, sans-serif; margin: 0; background: #fff0f5; }
-    nav { display: none; background: #ffb6c1; padding: 10px; position: sticky; top: 0; z-index: 999; justify-content: space-around; }
-    nav a { text-decoration: none; font-weight: bold; color: #333; }
-    .section { display: none; padding: 20px; }
+    body { font-family: Arial, sans-serif; background: #fff0f5; margin: 0; padding: 0; }
+    nav { background: #ffb6c1; padding: 10px; display: none; justify-content: space-around; position: sticky; top: 0; z-index: 10; }
+    nav a { text-decoration: none; color: #333; font-weight: bold; }
+    .section { padding: 20px; display: none; }
     .active { display: block; }
-    .card { background: #fff; padding: 20px; margin-bottom: 20px; border-radius: 10px; box-shadow: 0 2px 6px rgba(0,0,0,0.1); }
-    input, select, textarea { width: 100%; margin-bottom: 10px; padding: 8px; border-radius: 4px; border: 1px solid #ccc; }
-    button { padding: 10px 20px; background: #ff69b4; border: none; color: white; border-radius: 5px; cursor: pointer; }
-    #invitation-preview { margin-top: 20px; padding: 15px; background: white; border: 2px dashed #ccc; text-align: center; }
-    .product img, .rental img { width: 100px; height: 100px; object-fit: cover; margin-bottom: 5px; border-radius: 8px; }
+    .form-group { margin-bottom: 10px; }
+    input, textarea, select { width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px; margin: 5px 0; }
+    button { padding: 10px 20px; border: none; background: #ff69b4; color: white; border-radius: 5px; cursor: pointer; }
+    .card { background: #fff; padding: 20px; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); margin-bottom: 20px; }
+    .product img, .rental img { max-width: 100px; height: 100px; object-fit: cover; }
+    #invitation-preview { padding: 20px; border: 2px dashed #ccc; background: white; margin-top: 10px; text-align: center; }
   </style>
 </head>
 <body>
 
 <nav id="main-nav">
-  <a href="#" onclick="showSection('home-after-login')">🏠 Trang chủ</a>
-  <a href="#" onclick="showSection('tao-thiep')">💌 Thiệp Cưới</a>
-  <a href="#" onclick="showSection('mua-qua')">🎁 Mua Quà</a>
-  <a href="#" onclick="showSection('thue-do')">🧥 Thuê Đồ</a>
-  <a href="#" onclick="showSection('don-hang')">📦 Đơn Hàng</a>
+  <a href="#" onclick="showSection('home-after-login')">Trang chủ</a>
+  <a href="#" onclick="showSection('tao-thiep')">Tạo Thiệp</a>
+  <a href="#" onclick="showSection('mua-qua')">Mua Quà</a>
+  <a href="#" onclick="showSection('thue-do')">Thuê Đồ</a>
+  <a href="#" onclick="showSection('don-hang')">Đơn Hàng</a>
 </nav>
 
+<!-- Đăng nhập -->
 <div class="section active" id="home">
   <div class="card">
-    <h2>Đăng Nhập</h2>
+    <h2>Đăng nhập</h2>
     <input type="text" id="login-user" placeholder="Tên đăng nhập">
     <input type="password" id="login-pass" placeholder="Mật khẩu">
     <button onclick="login()">Đăng nhập</button>
@@ -37,9 +39,10 @@
   </div>
 </div>
 
+<!-- Đăng ký -->
 <div class="section" id="register">
   <div class="card">
-    <h2>Đăng ký tài khoản</h2>
+    <h2>Đăng ký</h2>
     <input type="text" id="reg-user" placeholder="Tên đăng nhập">
     <input type="email" id="reg-email" placeholder="Email">
     <input type="password" id="reg-pass" placeholder="Mật khẩu">
@@ -49,115 +52,117 @@
   </div>
 </div>
 
+<!-- Sau đăng nhập -->
 <div class="section" id="home-after-login">
   <div class="card">
     <h2>Xin chào <span id="current-user"></span>!</h2>
-    <p>Chọn chức năng ở menu để tiếp tục.</p>
+    <p>Chọn tính năng ở menu bên trên.</p>
   </div>
 </div>
 
+<!-- Tạo thiệp cưới -->
 <div class="section" id="tao-thiep">
   <div class="card">
-    <h2>Tạo Thiệp Cưới</h2>
+    <h2>Tạo thiệp cưới</h2>
     <input id="co-dau" placeholder="Tên cô dâu">
     <input id="chu-re" placeholder="Tên chú rể">
-    <input id="ten-khach-moi" placeholder="Kính mời">
-    <input id="dia-diem" placeholder="Địa điểm">
+    <input id="ten-khach-moi" placeholder="Tên khách mời">
+    <input id="dia-diem" placeholder="Địa điểm tổ chức">
     <input type="datetime-local" id="ngay-gio">
-    <select id="mau-thiep">
-      <option>Hồng</option>
-      <option>Xanh</option>
-      <option>Vàng</option>
-    </select>
     <select id="font-chu">
-      <option>Arial</option>
-      <option>Georgia</option>
-      <option>Courier New</option>
+      <option value="Arial">Arial</option>
+      <option value="Georgia">Georgia</option>
+      <option value="Courier New">Courier New</option>
     </select>
-    <input type="number" id="size-chu" value="18" placeholder="Cỡ chữ">
-    <button onclick="taoThiepMoi()">Tạo thiệp</button>
-    <button onclick="taiThiep()">Lưu về máy</button>
+    <input type="number" id="size-chu" placeholder="Cỡ chữ" value="18">
+    <button onclick="taoThiep()">Tạo thiệp</button>
     <div id="invitation-preview"></div>
   </div>
 </div>
 
+<!-- Mua quà -->
 <div class="section" id="mua-qua">
-  <div class="card" id="admin-add-product" style="display:none">
-    <h2>Thêm sản phẩm (admin)</h2>
-    <input type="file" id="sp-img" accept="image/*">
-    <input id="ten-sp" placeholder="Tên sản phẩm">
-    <input id="gia-sp" placeholder="Giá">
-    <textarea id="mo-ta-sp" placeholder="Mô tả sản phẩm"></textarea>
-    <button onclick="themSanPham()">Đăng sản phẩm</button>
-  </div>
   <div class="card">
-    <h3>Sản phẩm có sẵn</h3>
+    <h2>Sản phẩm</h2>
     <div id="danh-sach-san-pham"></div>
   </div>
 </div>
 
+<!-- Thuê đồ -->
 <div class="section" id="thue-do">
-  <div class="card" id="admin-add-rental" style="display:none">
-    <h2>Thêm đồ thuê (admin)</h2>
-    <input type="file" id="thue-img" accept="image/*">
-    <input id="ten-thue" placeholder="Tên đồ thuê">
-    <input id="gia-thue" placeholder="Giá thuê">
-    <textarea id="mo-ta-thue" placeholder="Mô tả"></textarea>
-    <button onclick="themThueDo()">Đăng đồ thuê</button>
-  </div>
   <div class="card">
-    <h3>Đồ thuê sẵn có</h3>
+    <h2>Đồ cho thuê</h2>
     <div id="danh-sach-thue"></div>
   </div>
 </div>
 
+<!-- Đơn hàng -->
 <div class="section" id="don-hang">
   <div class="card">
-    <h2>Quản lý đơn hàng</h2>
+    <h2>Đơn hàng của bạn</h2>
     <div id="don-hang-list"></div>
   </div>
 </div>
 
 <script>
+// Biến toàn cục
 let currentUser = null;
 let isAdmin = false;
 const adminAccount = { user: 'anhthanh', pass: '123456' };
 
 function showSection(id) {
-  document.querySelectorAll('.section').forEach(el => el.classList.remove('active'));
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
   document.getElementById(id).classList.add('active');
 }
 
 function register() {
   const user = document.getElementById('reg-user').value;
+  const email = document.getElementById('reg-email').value;
   const pass = document.getElementById('reg-pass').value;
   const pass2 = document.getElementById('reg-pass2').value;
   if (pass !== pass2) return alert('Mật khẩu không khớp');
-  const users = JSON.parse(localStorage.getItem('users') || '[]');
-  users.push({ user, pass });
+  let users = JSON.parse(localStorage.getItem('users')) || [];
+  users.push({ user, email, pass });
   localStorage.setItem('users', JSON.stringify(users));
-  alert('Đăng ký thành công');
+  alert('Đăng ký thành công!');
   showSection('home');
 }
 
 function login() {
   const user = document.getElementById('login-user').value;
   const pass = document.getElementById('login-pass').value;
-  const users = JSON.parse(localStorage.getItem('users') || '[]');
-  const found = users.find(u => u.user === user && u.pass === pass);
+  const regUsers = JSON.parse(localStorage.getItem('users')) || [];
+  const matched = regUsers.find(u => u.user === user && u.pass === pass);
   if (user === adminAccount.user && pass === adminAccount.pass) {
-    isAdmin = true;
-  } else if (!found) {
-    return alert('Sai tài khoản hoặc mật khẩu');
+    isAdmin = true; currentUser = user;
+  } else if (matched) {
+    isAdmin = false; currentUser = user;
+  } else {
+    alert('Sai tài khoản hoặc mật khẩu'); return;
   }
-  currentUser = user;
   document.getElementById('main-nav').style.display = 'flex';
   document.getElementById('current-user').innerText = currentUser;
-  document.getElementById('admin-add-product').style.display = isAdmin ? 'block' : 'none';
-  document.getElementById('admin-add-rental').style.display = isAdmin ? 'block' : 'none';
   showSection('home-after-login');
-  hienThiSanPham(); hienThiThueDo(); hienThiDonHang();
+}
+
+function taoThiep() {
+  const coDau = document.getElementById('co-dau').value;
+  const chuRe = document.getElementById('chu-re').value;
+  const diaDiem = document.getElementById('dia-diem').value;
+  const ngayGio = document.getElementById('ngay-gio').value;
+  const tenKhach = document.getElementById('ten-khach-moi').value;
+  const font = document.getElementById('font-chu').value;
+  const size = document.getElementById('size-chu').value;
+  const preview = document.getElementById('invitation-preview');
+  preview.style.fontFamily = font;
+  preview.style.fontSize = size + 'px';
+  preview.innerHTML = `
+    <p>Trân trọng kính mời ${tenKhach}</p>
+    <p>Tới dự lễ cưới của ${coDau} & ${chuRe}</p>
+    <p>Vào lúc: ${ngayGio}</p>
+    <p>Tại: ${diaDiem}</p>`;
 }
 </script>
+
 </body>
 </html>
