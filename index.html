@@ -18,8 +18,6 @@
     .product img, .rental img { max-width: 100%; border-radius: 6px; width: 100px; height: 100px; object-fit: cover; }
     .hidden { display: none; }
     #invitation-preview { padding: 20px; border: 2px dashed #ccc; text-align: center; margin-top: 20px; background: #fff; }
-    .share-buttons { margin-top: 10px; }
-    .share-buttons button { margin-right: 5px; }
   </style>
 </head>
 <body>
@@ -30,6 +28,7 @@
   <a href="#" onclick="showSection('mua-qua')">🎁 Mua Quà</a>
   <a href="#" onclick="showSection('thue-do')">🧥 Thuê Đồ</a>
   <a href="#" onclick="showSection('don-hang')">📦 Đơn Hàng</a>
+  <a href="#" onclick="showSection('ho-so')">🙍 Hồ Sơ</a>
 </nav>
 
 <div class="section active" id="home">
@@ -83,18 +82,55 @@
     <button onclick="taoThiepMoi()">Xem Thiệp</button>
     <button onclick="taiThiep()">Lưu Thiệp</button>
     <div id="invitation-preview"></div>
-    <div class="share-buttons">
-      <button onclick="shareFacebook()">Chia sẻ Facebook</button>
-      <button onclick="shareZalo()">Chia sẻ Zalo</button>
-    </div>
   </div>
 </div>
 
-<!-- Mua quà + Thuê đồ + Đơn hàng sẽ tiếp tục viết dưới -->
-<!-- Phần JavaScript bổ sung các chức năng đã yêu cầu sẽ được thêm tiếp -->
+<div class="section" id="mua-qua">
+  <div class="card" id="admin-add-product" class="hidden">
+    <h2>Thêm Sản phẩm (Admin)</h2>
+    <input type="file" id="sp-img" accept="image/*">
+    <input id="ten-sp" placeholder="Tên sản phẩm">
+    <input id="gia-sp" placeholder="Giá">
+    <textarea id="mo-ta-sp" placeholder="Mô tả sản phẩm"></textarea>
+    <button onclick="themSanPham()">Thêm</button>
+  </div>
+  <div class="card">
+    <h3>Sản phẩm hiện có</h3>
+    <div id="danh-sach-san-pham"></div>
+  </div>
+</div>
+
+<div class="section" id="thue-do">
+  <div class="card" id="admin-add-rental" class="hidden">
+    <h2>Thêm Đồ thuê (Admin)</h2>
+    <input type="file" id="thue-img" accept="image/*">
+    <input id="ten-thue" placeholder="Tên đồ thuê">
+    <input id="gia-thue" placeholder="Giá thuê">
+    <textarea id="mo-ta-thue" placeholder="Mô tả đồ thuê"></textarea>
+    <button onclick="themThueDo()">Thêm</button>
+  </div>
+  <div class="card">
+    <h3>Đồ thuê hiện có</h3>
+    <div id="danh-sach-thue"></div>
+  </div>
+</div>
+
+<div class="section" id="don-hang">
+  <div class="card">
+    <h2>Đơn Hàng</h2>
+    <div id="don-hang-list"></div>
+  </div>
+</div>
+
+<div class="section" id="ho-so">
+  <div class="card">
+    <h2>Đơn của bạn</h2>
+    <div id="don-khach-hang"></div>
+  </div>
+</div>
 
 <script>
-// Các chức năng tiếp theo sẽ được bổ sung ở đây như đã mô tả
+// JavaScript xử lý sẽ được bổ sung tiếp theo
 </script>
 
 </body>
