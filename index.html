@@ -3,164 +3,202 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Thiệp Cưới & Shop Mini</title>
+  <title>Ứng dụng Thiệp Cưới & Cửa hàng Mini</title>
   <style>
     body { font-family: Arial, sans-serif; background: #fff0f5; margin: 0; padding: 0; }
-    nav { background: #ffb6c1; padding: 10px; display: none; justify-content: space-around; position: sticky; top: 0; z-index: 10; }
+    nav { background: #ffb6c1; padding: 10px; display: flex; justify-content: space-around; position: sticky; top: 0; }
     nav a { text-decoration: none; color: #333; font-weight: bold; }
     .section { padding: 20px; display: none; }
     .active { display: block; }
-    .form-group { margin-bottom: 10px; }
-    input, textarea, select { width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px; margin: 5px 0; }
-    button { padding: 10px 20px; border: none; background: #ff69b4; color: white; border-radius: 5px; cursor: pointer; }
     .card { background: #fff; padding: 20px; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); margin-bottom: 20px; }
-    .product img, .rental img { max-width: 100px; height: 100px; object-fit: cover; }
-    #invitation-preview { padding: 20px; border: 2px dashed #ccc; background: white; margin-top: 10px; text-align: center; }
+    input, textarea, select { width: 100%; padding: 8px; margin: 6px 0; border-radius: 4px; border: 1px solid #ccc; }
+    button { padding: 10px 20px; background: #ff69b4; color: #fff; border: none; border-radius: 4px; cursor: pointer; margin-top: 10px; }
+    .product { border: 1px solid #ccc; padding: 10px; margin: 10px 0; border-radius: 5px; background: #fff; }
+    img { width: 100px; height: 100px; object-fit: cover; border-radius: 5px; }
   </style>
 </head>
 <body>
 
-<nav id="main-nav">
-  <a href="#" onclick="showSection('home-after-login')">Trang chủ</a>
-  <a href="#" onclick="showSection('tao-thiep')">Tạo Thiệp</a>
-  <a href="#" onclick="showSection('mua-qua')">Mua Quà</a>
-  <a href="#" onclick="showSection('thue-do')">Thuê Đồ</a>
-  <a href="#" onclick="showSection('don-hang')">Đơn Hàng</a>
+<nav>
+  <a href="#" onclick="show('home')">Trang chủ</a>
+  <a href="#" onclick="show('register')">Đăng ký</a>
+  <a href="#" onclick="show('login')">Đăng nhập</a>
+  <a href="#" onclick="show('wedding')">Thiệp cưới</a>
+  <a href="#" onclick="show('shop')">Mua quà</a>
+  <a href="#" onclick="show('rent')">Thuê đồ</a>
+  <a href="#" onclick="show('orders')">Đơn hàng</a>
 </nav>
 
-<!-- Đăng nhập -->
 <div class="section active" id="home">
   <div class="card">
-    <h2>Đăng nhập</h2>
-    <input type="text" id="login-user" placeholder="Tên đăng nhập">
-    <input type="password" id="login-pass" placeholder="Mật khẩu">
-    <button onclick="login()">Đăng nhập</button>
-    <p>Chưa có tài khoản? <a href="#" onclick="showSection('register')">Đăng ký</a></p>
+    <h2>Chào mừng đến với hệ thống Thiệp cưới & Cửa hàng Mini</h2>
   </div>
 </div>
 
-<!-- Đăng ký -->
 <div class="section" id="register">
   <div class="card">
     <h2>Đăng ký</h2>
-    <input type="text" id="reg-user" placeholder="Tên đăng nhập">
-    <input type="email" id="reg-email" placeholder="Email">
-    <input type="password" id="reg-pass" placeholder="Mật khẩu">
-    <input type="password" id="reg-pass2" placeholder="Nhập lại mật khẩu">
+    <input id="reg-user" placeholder="Tên đăng nhập">
+    <input id="reg-pass" type="password" placeholder="Mật khẩu">
+    <input id="reg-phone" placeholder="Số điện thoại">
+    <input id="reg-address" placeholder="Địa chỉ">
     <button onclick="register()">Tạo tài khoản</button>
-    <p><a href="#" onclick="showSection('home')">Quay lại</a></p>
   </div>
 </div>
 
-<!-- Sau đăng nhập -->
-<div class="section" id="home-after-login">
+<div class="section" id="login">
   <div class="card">
-    <h2>Xin chào <span id="current-user"></span>!</h2>
-    <p>Chọn tính năng ở menu bên trên.</p>
+    <h2>Đăng nhập</h2>
+    <input id="login-user" placeholder="Tên đăng nhập">
+    <input id="login-pass" type="password" placeholder="Mật khẩu">
+    <button onclick="login()">Đăng nhập</button>
   </div>
 </div>
 
-<!-- Tạo thiệp cưới -->
-<div class="section" id="tao-thiep">
+<div class="section" id="wedding">
   <div class="card">
     <h2>Tạo thiệp cưới</h2>
-    <input id="co-dau" placeholder="Tên cô dâu">
-    <input id="chu-re" placeholder="Tên chú rể">
-    <input id="ten-khach-moi" placeholder="Tên khách mời">
-    <input id="dia-diem" placeholder="Địa điểm tổ chức">
-    <input type="datetime-local" id="ngay-gio">
-    <select id="font-chu">
+    <input id="bride" placeholder="Tên cô dâu">
+    <input id="groom" placeholder="Tên chú rể">
+    <input id="guest" placeholder="Tên khách mời">
+    <input id="location" placeholder="Địa điểm tổ chức">
+    <input type="datetime-local" id="date">
+    <select id="font-style">
       <option value="Arial">Arial</option>
       <option value="Georgia">Georgia</option>
-      <option value="Courier New">Courier New</option>
+      <option value="Times New Roman">Times New Roman</option>
     </select>
-    <input type="number" id="size-chu" placeholder="Cỡ chữ" value="18">
-    <button onclick="taoThiep()">Tạo thiệp</button>
-    <div id="invitation-preview"></div>
+    <input type="number" id="font-size" placeholder="Cỡ chữ (px)" value="18">
+    <button onclick="generateInvite()">Tạo Thiệp</button>
+    <div id="invite-preview"></div>
   </div>
 </div>
 
-<!-- Mua quà -->
-<div class="section" id="mua-qua">
+<div class="section" id="shop">
   <div class="card">
-    <h2>Sản phẩm</h2>
-    <div id="danh-sach-san-pham"></div>
+    <h2>Mua quà</h2>
+    <div id="shop-list"></div>
   </div>
 </div>
 
-<!-- Thuê đồ -->
-<div class="section" id="thue-do">
+<div class="section" id="rent">
   <div class="card">
-    <h2>Đồ cho thuê</h2>
-    <div id="danh-sach-thue"></div>
+    <h2>Thuê đồ</h2>
+    <div id="rent-list"></div>
   </div>
 </div>
 
-<!-- Đơn hàng -->
-<div class="section" id="don-hang">
+<div class="section" id="orders">
   <div class="card">
     <h2>Đơn hàng của bạn</h2>
-    <div id="don-hang-list"></div>
+    <div id="order-list"></div>
   </div>
 </div>
 
 <script>
-// Biến toàn cục
+let users = JSON.parse(localStorage.getItem('users')) || [];
+let orders = JSON.parse(localStorage.getItem('orders')) || [];
 let currentUser = null;
-let isAdmin = false;
-const adminAccount = { user: 'anhthanh', pass: '123456' };
 
-function showSection(id) {
+const products = [
+  { id: 1, name: 'Hộp quà cưới', price: '300,000đ', img: 'https://via.placeholder.com/100' },
+  { id: 2, name: 'Khung ảnh cưới', price: '500,000đ', img: 'https://via.placeholder.com/100' }
+];
+const rentals = [
+  { id: 1, name: 'Áo dài cưới', price: '200,000đ/ngày', img: 'https://via.placeholder.com/100' },
+  { id: 2, name: 'Váy cưới', price: '500,000đ/ngày', img: 'https://via.placeholder.com/100' }
+];
+
+function show(id) {
   document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
   document.getElementById(id).classList.add('active');
+  if(id === 'shop') renderProducts();
+  if(id === 'rent') renderRentals();
+  if(id === 'orders') renderOrders();
 }
 
 function register() {
   const user = document.getElementById('reg-user').value;
-  const email = document.getElementById('reg-email').value;
   const pass = document.getElementById('reg-pass').value;
-  const pass2 = document.getElementById('reg-pass2').value;
-  if (pass !== pass2) return alert('Mật khẩu không khớp');
-  let users = JSON.parse(localStorage.getItem('users')) || [];
-  users.push({ user, email, pass });
+  const phone = document.getElementById('reg-phone').value;
+  const address = document.getElementById('reg-address').value;
+  users.push({ user, pass, phone, address });
   localStorage.setItem('users', JSON.stringify(users));
   alert('Đăng ký thành công!');
-  showSection('home');
+  show('login');
 }
 
 function login() {
   const user = document.getElementById('login-user').value;
   const pass = document.getElementById('login-pass').value;
-  const regUsers = JSON.parse(localStorage.getItem('users')) || [];
-  const matched = regUsers.find(u => u.user === user && u.pass === pass);
-  if (user === adminAccount.user && pass === adminAccount.pass) {
-    isAdmin = true; currentUser = user;
-  } else if (matched) {
-    isAdmin = false; currentUser = user;
-  } else {
-    alert('Sai tài khoản hoặc mật khẩu'); return;
-  }
-  document.getElementById('main-nav').style.display = 'flex';
-  document.getElementById('current-user').innerText = currentUser;
-  showSection('home-after-login');
+  const match = users.find(u => u.user === user && u.pass === pass);
+  if(match) {
+    currentUser = match;
+    alert('Đăng nhập thành công!');
+    show('home');
+  } else alert('Sai thông tin đăng nhập');
 }
 
-function taoThiep() {
-  const coDau = document.getElementById('co-dau').value;
-  const chuRe = document.getElementById('chu-re').value;
-  const diaDiem = document.getElementById('dia-diem').value;
-  const ngayGio = document.getElementById('ngay-gio').value;
-  const tenKhach = document.getElementById('ten-khach-moi').value;
-  const font = document.getElementById('font-chu').value;
-  const size = document.getElementById('size-chu').value;
-  const preview = document.getElementById('invitation-preview');
-  preview.style.fontFamily = font;
-  preview.style.fontSize = size + 'px';
-  preview.innerHTML = `
-    <p>Trân trọng kính mời ${tenKhach}</p>
-    <p>Tới dự lễ cưới của ${coDau} & ${chuRe}</p>
-    <p>Vào lúc: ${ngayGio}</p>
-    <p>Tại: ${diaDiem}</p>`;
+function renderProducts() {
+  const list = document.getElementById('shop-list');
+  list.innerHTML = '';
+  products.forEach(p => {
+    list.innerHTML += `<div class="product">
+      <img src="${p.img}"><h3>${p.name}</h3>
+      <p>${p.price}</p>
+      <button onclick="order('${p.name}', '${p.price}', 'mua')">Mua</button>
+    </div>`;
+  });
+}
+
+function renderRentals() {
+  const list = document.getElementById('rent-list');
+  list.innerHTML = '';
+  rentals.forEach(r => {
+    list.innerHTML += `<div class="product">
+      <img src="${r.img}"><h3>${r.name}</h3>
+      <p>${r.price}</p>
+      <button onclick="order('${r.name}', '${r.price}', 'thuê')">Thuê</button>
+    </div>`;
+  });
+}
+
+function order(name, price, type) {
+  const note = prompt('Nhập tên người nhận, địa chỉ, số điện thoại:');
+  if(note && currentUser) {
+    orders.push({ user: currentUser.user, item: name, price, type, note });
+    localStorage.setItem('orders', JSON.stringify(orders));
+    alert('Đã đặt hàng thành công!');
+  }
+}
+
+function renderOrders() {
+  const list = document.getElementById('order-list');
+  list.innerHTML = '';
+  const myOrders = orders.filter(o => o.user === currentUser.user);
+  myOrders.forEach(o => {
+    list.innerHTML += `<div class="product">
+      <strong>${o.item}</strong> (${o.type}) - ${o.price}<br>
+      Ghi chú: ${o.note}
+    </div>`;
+  });
+}
+
+function generateInvite() {
+  const bride = document.getElementById('bride').value;
+  const groom = document.getElementById('groom').value;
+  const guest = document.getElementById('guest').value;
+  const location = document.getElementById('location').value;
+  const date = document.getElementById('date').value;
+  const font = document.getElementById('font-style').value;
+  const size = document.getElementById('font-size').value;
+  const preview = document.getElementById('invite-preview');
+  preview.innerHTML = `<div style="font-family:${font}; font-size:${size}px; border:1px dashed #ccc; padding:10px;">
+    Kính mời ${guest}<br>
+    Đến dự lễ thành hôn của ${bride} & ${groom}<br>
+    Tại ${location}<br>
+    Vào lúc ${date}
+  </div>`;
 }
 </script>
 
