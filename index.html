@@ -3,202 +3,160 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Thiệp Cưới & Cửa Hàng</title>
+  <title>Shop Thiệp & Đồ Cưới</title>
   <style>
-    body { font-family: Arial, sans-serif; background: #fff0f5; margin: 0; padding: 0; }
-    nav { background: #ffb6c1; padding: 10px; display: none; justify-content: space-around; position: sticky; top: 0; z-index: 10; }
-    nav a { text-decoration: none; color: #333; font-weight: bold; cursor: pointer; }
-    .section { padding: 20px; display: none; }
+    body { font-family: 'Segoe UI', sans-serif; background: #fff0f5; margin: 0; padding: 0; }
+    header { background: #ff69b4; color: white; padding: 10px 20px; display: flex; justify-content: space-between; align-items: center; }
+    nav { display: none; background: #ffc0cb; padding: 10px; position: sticky; top: 0; z-index: 10; }
+    nav a { margin: 0 10px; color: #333; text-decoration: none; font-weight: bold; }
+    .section { display: none; padding: 20px; }
     .active { display: block; }
-    input, textarea, select { width: 100%; padding: 8px; margin: 5px 0; border-radius: 4px; border: 1px solid #ccc; }
-    button { padding: 10px 20px; border: none; background: #ff69b4; color: white; border-radius: 5px; cursor: pointer; }
-    .card { background: #fff; padding: 20px; margin: 10px 0; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
-    .product img { width: 100px; height: 100px; object-fit: cover; border-radius: 6px; }
-    .product { display: flex; gap: 10px; margin-bottom: 10px; border: 1px solid #ccc; padding: 10px; border-radius: 8px; background: #fff; }
-    .logout { float: right; background: #333; color: white; padding: 5px 10px; border-radius: 5px; }
+    .card { background: #fff; padding: 20px; margin-bottom: 20px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+    input, textarea, select, button { width: 100%; padding: 10px; margin: 8px 0; border-radius: 5px; border: 1px solid #ccc; }
+    button { background: #ff69b4; color: white; font-weight: bold; border: none; cursor: pointer; }
+    #preview-thiep { border: 2px dashed #ccc; padding: 20px; margin-top: 15px; text-align: center; background: #fff; }
+    .products, .rentals { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 15px; }
+    .product-card img { width: 100%; height: 150px; object-fit: cover; border-radius: 6px; }
+    .product-card { background: #fff; padding: 10px; border: 1px solid #ddd; border-radius: 8px; text-align: center; }
+    .hidden { display: none; }
   </style>
 </head>
 <body>
-
+<header>
+  <h2>💒 Thiệp Cưới & Shop Mini</h2>
+  <button onclick="logout()" id="btnLogout" style="display:none;">Đăng Xuất</button>
+</header>
 <nav id="main-nav">
-  <a onclick="showSection('home-after-login')">Trang chủ</a>
-  <a onclick="showSection('tao-thiep')">Thiệp Cưới</a>
-  <a onclick="showSection('shop')">Cửa Hàng</a>
-  <a onclick="logout()" class="logout">Đăng Xuất</a>
+  <a href="#" onclick="showSection('tao-thiep')">Tạo Thiệp</a>
+  <a href="#" onclick="showSection('mua-qua')">Mua Quà</a>
+  <a href="#" onclick="showSection('thue-do')">Thuê Đồ</a>
+  <a href="#" onclick="showSection('quan-ly-don')">Đơn Hàng</a>
 </nav>
-
-<div class="section active" id="home">
+<div class="section active" id="login-section">
   <div class="card">
-    <h2>Đăng Nhập</h2>
+    <h3>Đăng Nhập</h3>
     <input type="text" id="login-user" placeholder="Tên đăng nhập">
     <input type="password" id="login-pass" placeholder="Mật khẩu">
-    <button onclick="login()">Đăng nhập</button>
-    <p>Chưa có tài khoản? <a onclick="showSection('register')">Đăng ký</a></p>
+    <button onclick="login()">Đăng Nhập</button>
+    <p>Chưa có tài khoản? <a href="#" onclick="showSection('register')">Đăng ký</a></p>
   </div>
 </div>
-
 <div class="section" id="register">
   <div class="card">
-    <h2>Đăng Ký</h2>
+    <h3>Đăng Ký</h3>
     <input type="text" id="reg-user" placeholder="Tên đăng nhập">
     <input type="email" id="reg-email" placeholder="Email">
     <input type="password" id="reg-pass" placeholder="Mật khẩu">
-    <button onclick="register()">Tạo tài khoản</button>
+    <button onclick="register()">Tạo Tài Khoản</button>
   </div>
 </div>
-
-<div class="section" id="home-after-login">
-  <div class="card">
-    <h2>Xin chào, <span id="current-user"></span>!</h2>
-    <p>Chọn chức năng bên trên để bắt đầu.</p>
-  </div>
-</div>
-
 <div class="section" id="tao-thiep">
   <div class="card">
-    <h2>Tạo Thiệp Cưới</h2>
-    <input id="ten-co-dau" placeholder="Tên cô dâu">
-    <input id="ten-chu-re" placeholder="Tên chú rể">
-    <input id="ten-khach-moi" placeholder="Kính mời">
-    <input type="datetime-local" id="thoi-gian">
-    <input id="dia-diem" placeholder="Địa điểm">
-    <select id="mau-thiep">
-      <option value="pink">Hồng</option>
-      <option value="lightblue">Xanh</option>
-      <option value="lightyellow">Vàng</option>
+    <h3>Tạo Thiệp Cưới</h3>
+    <input id="tenCoDau" placeholder="Tên cô dâu">
+    <input id="tenChuRe" placeholder="Tên chú rể">
+    <input id="diaDiem" placeholder="Địa điểm tổ chức">
+    <input id="ngayGio" type="datetime-local">
+    <input id="tenKhachMoi" placeholder="Kính mời">
+    <select id="mauThiep">
+      <option>Hồng</option>
+      <option>Xanh</option>
+      <option>Vàng</option>
     </select>
-    <select id="font-chu">
+    <select id="fontChu">
       <option value="Arial">Arial</option>
       <option value="Georgia">Georgia</option>
-      <option value="Courier New">Courier New</option>
+      <option value="Times New Roman">Times New Roman</option>
     </select>
-    <input type="number" id="co-chu" value="18" placeholder="Cỡ chữ (px)">
-    <button onclick="taoThiep()">Xem Thiệp</button>
-    <button onclick="luuThiep()">Lưu Thiệp</button>
-    <div id="hien-thiep" style="margin-top: 20px; padding: 20px; border: 1px dashed #aaa;"></div>
+    <input type="number" id="coChu" value="18" placeholder="Cỡ chữ (px)">
+    <button onclick="taoThiep()">Tạo Thiệp</button>
+    <button onclick="taiThiep()">Lưu Thiệp</button>
+    <div id="preview-thiep"></div>
   </div>
 </div>
-
-<div class="section" id="shop">
-  <div class="card" id="admin-them">
-    <h2>Thêm sản phẩm (Chỉ admin)</h2>
-    <input type="text" id="ten-sp" placeholder="Tên sản phẩm">
-    <input type="text" id="gia-sp" placeholder="Giá">
-    <input type="file" id="anh-sp">
-    <button onclick="themSanPham()">Thêm</button>
-  </div>
+<div class="section" id="mua-qua">
   <div class="card">
-    <h2>Sản phẩm</h2>
-    <div id="ds-san-pham"></div>
+    <h3>Sản phẩm</h3>
+    <div class="products" id="product-list"></div>
   </div>
 </div>
-
+<div class="section" id="thue-do">
+  <div class="card">
+    <h3>Đồ thuê</h3>
+    <div class="rentals" id="rental-list"></div>
+  </div>
+</div>
+<div class="section" id="quan-ly-don">
+  <div class="card">
+    <h3>Đơn hàng của bạn</h3>
+    <div id="order-list"></div>
+  </div>
+</div>
+<script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
 <script>
 let currentUser = null;
-let isAdmin = false;
-const dsSP = [];
-
+const admin = { user: 'anhthanh', pass: '123456' };
 function showSection(id) {
   document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
   document.getElementById(id).classList.add('active');
 }
-
 function login() {
   const u = document.getElementById('login-user').value;
   const p = document.getElementById('login-pass').value;
-  if (u === 'anhthanh' && p === '123456') {
-    isAdmin = true;
-  } else {
-    const reg = JSON.parse(localStorage.getItem('users') || '[]');
-    const match = reg.find(r => r.user === u && r.pass === p);
-    if (!match) return alert('Sai thông tin');
-  }
-  currentUser = u;
-  document.getElementById('main-nav').style.display = 'flex';
-  document.getElementById('current-user').innerText = currentUser;
-  document.getElementById('admin-them').style.display = isAdmin ? 'block' : 'none';
-  showSection('home-after-login');
-  hienThiSanPham();
+  if ((u === admin.user && p === admin.pass) || getUsers().find(x => x.user === u && x.pass === p)) {
+    currentUser = u;
+    document.getElementById('main-nav').style.display = 'block';
+    document.getElementById('btnLogout').style.display = 'inline';
+    showSection('tao-thiep');
+  } else alert('Sai thông tin');
 }
-
 function logout() {
   currentUser = null;
-  isAdmin = false;
   document.getElementById('main-nav').style.display = 'none';
-  showSection('home');
+  document.getElementById('btnLogout').style.display = 'none';
+  showSection('login-section');
 }
-
+function getUsers() {
+  return JSON.parse(localStorage.getItem('users') || '[]');
+}
 function register() {
-  const user = document.getElementById('reg-user').value;
-  const email = document.getElementById('reg-email').value;
-  const pass = document.getElementById('reg-pass').value;
-  let ds = JSON.parse(localStorage.getItem('users') || '[]');
-  ds.push({ user, email, pass });
-  localStorage.setItem('users', JSON.stringify(ds));
-  alert('Đăng ký thành công!');
-  showSection('home');
+  const u = document.getElementById('reg-user').value;
+  const e = document.getElementById('reg-email').value;
+  const p = document.getElementById('reg-pass').value;
+  const users = getUsers();
+  if (users.find(x => x.user === u)) return alert('Đã tồn tại');
+  users.push({ user: u, email: e, pass: p });
+  localStorage.setItem('users', JSON.stringify(users));
+  alert('Đăng ký thành công');
+  showSection('login-section');
 }
-
 function taoThiep() {
-  const cd = document.getElementById('ten-co-dau').value;
-  const cr = document.getElementById('ten-chu-re').value;
-  const km = document.getElementById('ten-khach-moi').value;
-  const tg = document.getElementById('thoi-gian').value;
-  const dd = document.getElementById('dia-diem').value;
-  const font = document.getElementById('font-chu').value;
-  const cochu = document.getElementById('co-chu').value;
-  const bg = document.getElementById('mau-thiep').value;
-
-  const div = document.getElementById('hien-thiep');
-  div.innerHTML = `
-    <div style="background:${bg}; font-family:${font}; font-size:${cochu}px; padding: 20px">
-      <p>Kính mời: <strong>${km}</strong></p>
-      <p>Tham dự lễ cưới của: <strong>${cd}</strong> & <strong>${cr}</strong></p>
-      <p>Thời gian: ${tg}</p>
-      <p>Địa điểm: ${dd}</p>
+  const coDau = document.getElementById('tenCoDau').value;
+  const chuRe = document.getElementById('tenChuRe').value;
+  const diaDiem = document.getElementById('diaDiem').value;
+  const ngay = document.getElementById('ngayGio').value;
+  const khach = document.getElementById('tenKhachMoi').value;
+  const mau = document.getElementById('mauThiep').value;
+  const font = document.getElementById('fontChu').value;
+  const size = document.getElementById('coChu').value;
+  document.getElementById('preview-thiep').innerHTML = `
+    <div style="font-family:${font}; font-size:${size}px; background:${mau.toLowerCase()}; padding:20px; border-radius:8px">
+      <h2>Thiệp Mời</h2>
+      <p>Kính mời: ${khach}</p>
+      <p>Tới dự lễ cưới của: ${coDau} & ${chuRe}</p>
+      <p>Địa điểm: ${diaDiem}</p>
+      <p>Thời gian: ${ngay}</p>
     </div>
   `;
 }
-
-function luuThiep() {
-  html2canvas(document.getElementById('hien-thiep')).then(canvas => {
+function taiThiep() {
+  html2canvas(document.getElementById('preview-thiep')).then(canvas => {
     const link = document.createElement('a');
-    link.download = 'thiep-cuoi.png';
+    link.download = 'thiep-moi.png';
     link.href = canvas.toDataURL();
     link.click();
   });
 }
-
-function themSanPham() {
-  const ten = document.getElementById('ten-sp').value;
-  const gia = document.getElementById('gia-sp').value;
-  const file = document.getElementById('anh-sp').files[0];
-  const reader = new FileReader();
-  reader.onload = () => {
-    dsSP.push({ ten, gia, anh: reader.result });
-    hienThiSanPham();
-  };
-  if (file) reader.readAsDataURL(file);
-}
-
-function hienThiSanPham() {
-  const box = document.getElementById('ds-san-pham');
-  box.innerHTML = '';
-  dsSP.forEach(sp => {
-    const div = document.createElement('div');
-    div.className = 'product';
-    div.innerHTML = `
-      <img src="${sp.anh}">
-      <div>
-        <h4>${sp.ten}</h4>
-        <p>Giá: ${sp.gia}</p>
-        <button>Mua ngay</button>
-      </div>
-    `;
-    box.appendChild(div);
-  });
-}
 </script>
-<script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
 </body>
 </html>
