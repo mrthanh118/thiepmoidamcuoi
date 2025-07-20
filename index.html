@@ -243,6 +243,103 @@
     document.getElementById('product-preview').innerHTML = "<h3>Xem trước:</h3>";
     document.getElementById('product-preview').appendChild(img);
   }
+  <!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Thiệp Cưới & Shop</title>
+  <style>
+    body { font-family: Arial, sans-serif; background: #ffe4ec; margin: 0; padding: 0; }
+    nav { background: #ffb6c1; padding: 10px; display: flex; justify-content: space-around; position: sticky; top: 0; }
+    nav a { text-decoration: none; color: #333; font-weight: bold; }
+    .section { padding: 20px; display: none; }
+    .active { display: block; }
+    .form-group { margin-bottom: 10px; }
+    input, textarea { width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px; }
+    .product { border: 1px solid #ccc; padding: 10px; margin-bottom: 10px; border-radius: 8px; background: #fff; }
+    .product img { max-width: 100%; border-radius: 6px; }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="#" onclick="showSection('shop')">🎁 Mua Quà</a>
+  <a href="#" onclick="showSection('thue')">🧥 Thuê Đồ</a>
+</nav>
+
+<div class="section active" id="shop">
+  <h2>Mua Quà - Kênh Bán Hàng</h2>
+  <div class="form-group">
+    <input type="file" id="shop-img">
+    <input type="text" id="shop-name" placeholder="Tên sản phẩm">
+    <input type="text" id="shop-price" placeholder="Giá">
+    <textarea id="shop-desc" placeholder="Mô tả sản phẩm"></textarea>
+    <button onclick="addProduct('shop')">Xác nhận thêm sản phẩm</button>
+  </div>
+  <div id="shop-list"></div>
+</div>
+
+<div class="section" id="thue">
+  <h2>Thuê Đồ - Kênh Cho Thuê</h2>
+  <div class="form-group">
+    <input type="file" id="rent-img">
+    <input type="text" id="rent-name" placeholder="Tên dịch vụ">
+    <input type="text" id="rent-price" placeholder="Giá cho thuê">
+    <textarea id="rent-desc" placeholder="Chi tiết dịch vụ cho thuê"></textarea>
+    <button onclick="addProduct('rent')">Xác nhận thêm dịch vụ</button>
+  </div>
+  <div id="rent-list"></div>
+</div>
+
+<script>
+  function showSection(id) {
+    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+  }
+
+  function addProduct(type) {
+    const name = document.getElementById(`${type}-name`).value;
+    const price = document.getElementById(`${type}-price`).value;
+    const desc = document.getElementById(`${type}-desc`).value;
+    const imgInput = document.getElementById(`${type}-img`);
+    const file = imgInput.files[0];
+    if (!file) return alert('Chọn ảnh trước');
+
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      const products = JSON.parse(localStorage.getItem(type) || '[]');
+      products.push({ name, price, desc, img: e.target.result });
+      localStorage.setItem(type, JSON.stringify(products));
+      renderProducts(type);
+    }
+    reader.readAsDataURL(file);
+  }
+
+  function renderProducts(type) {
+    const container = document.getElementById(`${type}-list`);
+    container.innerHTML = '';
+    const products = JSON.parse(localStorage.getItem(type) || '[]');
+    products.forEach(p => {
+      const div = document.createElement('div');
+      div.className = 'product';
+      div.innerHTML = `
+        <img src="${p.img}" alt="${p.name}">
+        <h4>${p.name}</h4>
+        <p><strong>Giá:</strong> ${p.price}</p>
+        <p>${p.desc}</p>
+      `;
+      container.appendChild(div);
+    });
+  }
+
+  renderProducts('shop');
+  renderProducts('rent');
+</script>
+
+</body>
+</html>
+
 </script>
 
 </body>
