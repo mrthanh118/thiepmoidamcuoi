@@ -20,7 +20,7 @@
 <body>
   <header><h1>Thiệp Cưới & Shop Mini</h1></header>
   <nav id="nav" class="hidden">
-    <a href="#" onclick="showPage('wedding')">Thiệp Cưới</a>
+    <a href="#" onclick="showPage('wedding')">Tạo Thiệp Cưới</a>
     <a href="#" onclick="showPage('gift')">Mua Quà</a>
     <a href="#" onclick="showPage('rent')">Thuê Đồ</a>
     <a href="#" onclick="showPage('orders')">Đơn Hàng</a>
@@ -58,9 +58,10 @@
       <option value="bold">Đậm</option>
     </select>
     <input type="color" id="fontColor">
-    <button onclick="generateInvite()">Tạo Thiệp</button>
-    <div id="invite-output" class="invite"></div>
+   <button onclick="taoThiep()">Tạo Thiệp</button>
+    <div id="thiep-preview"></div>
   </div>
+</div>
 
   <div class="container hidden" id="gift">
     <h2>Danh sách quà tặng</h2>
