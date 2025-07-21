@@ -3,40 +3,36 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Ứng dụng Thiệp Cưới</title>
+  <title>Ứng dụng Thiệp Mời Đám Cưới</title>
   <style>
     body {
-      font-family: 'Segoe UI', sans-serif;
-      background: linear-gradient(to right, #f8e8e8, #fff8f8);
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       margin: 0;
       padding: 0;
+      background: linear-gradient(to bottom right, #ffdee9, #b5fffc);
+      color: #333;
     }
     header {
-      background-color: #c94f7c;
+      background-color: #ff6b81;
       color: white;
       padding: 1rem;
       text-align: center;
-      font-size: 1.5rem;
+      font-size: 1.8rem;
     }
     nav {
-      background-color: #ffe5ec;
+      background-color: #fff;
       padding: 1rem;
       display: flex;
-      flex-wrap: wrap;
-      gap: 1rem;
-      justify-content: center;
+      justify-content: space-around;
+      border-bottom: 2px solid #ddd;
     }
     nav button {
-      padding: 0.5rem 1rem;
-      font-size: 1rem;
-      border: none;
-      border-radius: 5px;
-      background-color: #ff85a2;
+      background-color: #ff6b81;
       color: white;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 5px;
       cursor: pointer;
-    }
-    nav button:hover {
-      background-color: #e86a89;
     }
     section {
       padding: 1rem;
@@ -46,115 +42,115 @@
     }
     .card {
       background-color: white;
-      border-radius: 10px;
       padding: 1rem;
-      margin-bottom: 1rem;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      margin: 1rem 0;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     }
     input, textarea, select {
+      display: block;
       width: 100%;
-      padding: 0.5rem;
       margin: 0.5rem 0;
-      border-radius: 5px;
+      padding: 0.5rem;
+      border-radius: 4px;
       border: 1px solid #ccc;
     }
-    .title {
-      font-style: italic;
-      font-size: 1.2rem;
-      color: #b21c50;
+    .submit-btn {
+      background-color: #28a745;
+      color: white;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 5px;
+      cursor: pointer;
     }
   </style>
 </head>
 <body>
-  <header>Ứng Dụng Thiệp Mời Đám Cưới</header>
+  <header>
+    Ứng dụng Thiệp Mời Đám Cưới
+  </header>
 
   <nav>
-    <button onclick="toggleForm('loginForm')">Đăng nhập</button>
-    <button onclick="toggleForm('registerForm')">Đăng ký</button>
-    <button onclick="logout()" id="logoutBtn" class="hidden">Đăng xuất</button>
-    <button onclick="navigate('taoThiep')" class="hidden">Tạo thiệp cưới</button>
-    <button onclick="navigate('muaQua')" class="hidden">Mua quà tặng</button>
-    <button onclick="navigate('thueDo')" class="hidden">Thuê đồ</button>
-    <button onclick="navigate('hoSo')" class="hidden">Hồ sơ cá nhân</button>
-    <button onclick="navigate('xemNgayTot')" class="hidden">Xem ngày tốt</button>
+    <button onclick="showSection('login')">Đăng nhập</button>
+    <button onclick="toggleRegister()">Đăng ký</button>
+    <button onclick="showSection('createCard')">Tạo Thiệp</button>
+    <button onclick="showSection('gifts')">Quà Tặng</button>
+    <button onclick="showSection('rent')">Thuê Đồ</button>
+    <button onclick="showSection('profile')">Hồ Sơ</button>
+    <button onclick="showSection('goodDay')">Xem Ngày Tốt</button>
+    <button onclick="logout()">Đăng Xuất</button>
   </nav>
 
-  <section id="content">
-    <!-- Các mục động sẽ render ở đây -->
+  <section id="login" class="card">
+    <h2>Đăng Nhập</h2>
+    <input type="text" placeholder="Tên đăng nhập">
+    <input type="password" placeholder="Mật khẩu">
+    <button class="submit-btn">Đăng Nhập</button>
   </section>
 
-  <!-- Form đăng nhập -->
-  <section id="loginForm" class="card hidden">
-    <h3>Đăng nhập</h3>
-    <input type="text" id="loginUser" placeholder="Tên đăng nhập">
-    <input type="password" id="loginPass" placeholder="Mật khẩu">
-    <button onclick="login()">Đăng nhập</button>
+  <section id="register" class="card hidden">
+    <h2>Đăng Ký</h2>
+    <input type="text" placeholder="Tên đăng nhập">
+    <input type="password" placeholder="Mật khẩu">
+    <input type="password" placeholder="Nhập lại mật khẩu">
+    <button class="submit-btn">Đăng Ký</button>
   </section>
 
-  <!-- Form đăng ký -->
-  <section id="registerForm" class="card hidden">
-    <h3>Đăng ký</h3>
-    <input type="text" id="regUser" placeholder="Tên đăng nhập">
-    <input type="password" id="regPass" placeholder="Mật khẩu">
-    <button onclick="register()">Đăng ký</button>
+  <section id="createCard" class="card hidden">
+    <h2>Tạo Thiệp Cưới</h2>
+    <textarea placeholder="Tên cô dâu/chú rể, địa chỉ, khách mời..."></textarea>
+    <select>
+      <option>Font chữ đẹp</option>
+      <option>Font nghiêng</option>
+      <option>Font đậm</option>
+    </select>
+    <button class="submit-btn">Lưu Thiệp</button>
+    <button class="submit-btn">Chia sẻ</button>
+  </section>
+
+  <section id="gifts" class="card hidden">
+    <h2>Quà Tặng</h2>
+    <div>
+      <p>Tên sản phẩm, ảnh, giá, mô tả</p>
+      <button>Mua</button>
+    </div>
+  </section>
+
+  <section id="rent" class="card hidden">
+    <h2>Thuê Đồ</h2>
+    <div>
+      <p>Tên sản phẩm, ảnh, giá thuê, mô tả</p>
+      <button>Thuê</button>
+    </div>
+  </section>
+
+  <section id="profile" class="card hidden">
+    <h2>Hồ Sơ Cá Nhân</h2>
+    <p>Thông tin cá nhân và đơn hàng</p>
+    <button>Nhắn Tin</button>
+  </section>
+
+  <section id="goodDay" class="card hidden">
+    <h2>Xem Ngày Tốt</h2>
+    <input type="date">
+    <button class="submit-btn">Xem</button>
+    <p>Kết quả xem ngày sẽ hiện ở đây...</p>
   </section>
 
   <script>
-    let currentUser = localStorage.getItem('user') || null;
-
-    function toggleForm(id) {
-      document.querySelectorAll('section').forEach(s => s.classList.add('hidden'));
-      document.getElementById(id).classList.toggle('hidden');
+    function showSection(id) {
+      document.querySelectorAll('section').forEach(sec => sec.classList.add('hidden'));
+      document.getElementById(id).classList.remove('hidden');
     }
 
-    function login() {
-      const user = document.getElementById('loginUser').value;
-      const pass = document.getElementById('loginPass').value;
-      const savedUser = localStorage.getItem(user);
-      if (savedUser && savedUser === pass) {
-        alert('Đăng nhập thành công');
-        currentUser = user;
-        localStorage.setItem('user', user);
-        showMenu();
-      } else {
-        alert('Sai tài khoản hoặc mật khẩu');
-      }
-    }
-
-    function register() {
-      const user = document.getElementById('regUser').value;
-      const pass = document.getElementById('regPass').value;
-      localStorage.setItem(user, pass);
-      alert('Đăng ký thành công, vui lòng đăng nhập');
-      toggleForm('loginForm');
+    function toggleRegister() {
+      const reg = document.getElementById('register');
+      reg.classList.toggle('hidden');
     }
 
     function logout() {
-      currentUser = null;
-      localStorage.removeItem('user');
-      hideMenu();
-      document.getElementById('content').innerHTML = '';
-    }
-
-    function showMenu() {
-      document.querySelectorAll('nav button').forEach(btn => btn.classList.remove('hidden'));
-      toggleForm('none');
-    }
-
-    function hideMenu() {
-      document.querySelectorAll('nav button').forEach(btn => {
-        if (!['Đăng nhập', 'Đăng ký'].includes(btn.textContent)) {
-          btn.classList.add('hidden');
-        }
-      });
-    }
-
-    function navigate(page) {
-      document.getElementById('content').innerHTML = `<div class='card'><strong>${page}</strong> - Tính năng đang được phát triển</div>`;
-    }
-
-    if (currentUser) {
-      showMenu();
+      alert("Bạn đã đăng xuất!");
+      showSection('login');
     }
   </script>
 </body>
