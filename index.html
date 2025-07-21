@@ -3,96 +3,159 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Ứng dụng Thiệp Mời Đám Cưới</title>
-  <link rel="stylesheet" href="style.css">
+  <title>Ứng dụng Thiệp Cưới</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to right, #f8e8e8, #fff8f8);
+      margin: 0;
+      padding: 0;
+    }
+    header {
+      background-color: #c94f7c;
+      color: white;
+      padding: 1rem;
+      text-align: center;
+      font-size: 1.5rem;
+    }
+    nav {
+      background-color: #ffe5ec;
+      padding: 1rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      justify-content: center;
+    }
+    nav button {
+      padding: 0.5rem 1rem;
+      font-size: 1rem;
+      border: none;
+      border-radius: 5px;
+      background-color: #ff85a2;
+      color: white;
+      cursor: pointer;
+    }
+    nav button:hover {
+      background-color: #e86a89;
+    }
+    section {
+      padding: 1rem;
+    }
+    .hidden {
+      display: none;
+    }
+    .card {
+      background-color: white;
+      border-radius: 10px;
+      padding: 1rem;
+      margin-bottom: 1rem;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+    input, textarea, select {
+      width: 100%;
+      padding: 0.5rem;
+      margin: 0.5rem 0;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+    .title {
+      font-style: italic;
+      font-size: 1.2rem;
+      color: #b21c50;
+    }
+  </style>
 </head>
 <body>
-  <header>
-    <h1>Ứng dụng Thiệp Mời Đám Cưới</h1>
-    <nav id="menu">
-      <button onclick="toggleSection('loginSection')">Đăng nhập</button>
-      <button onclick="toggleSection('registerSection')">Đăng ký</button>
-      <button onclick="logout()">Đăng xuất</button>
-    </nav>
-  </header>
+  <header>Ứng Dụng Thiệp Mời Đám Cưới</header>
 
-  <main>
-    <section id="registerSection" style="display: none;">
-      <h2>Đăng ký tài khoản</h2>
-      <input type="text" id="regUsername" placeholder="Tên đăng nhập">
-      <input type="password" id="regPassword" placeholder="Mật khẩu">
-      <button onclick="register()">Đăng ký</button>
-    </section>
+  <nav>
+    <button onclick="toggleForm('loginForm')">Đăng nhập</button>
+    <button onclick="toggleForm('registerForm')">Đăng ký</button>
+    <button onclick="logout()" id="logoutBtn" class="hidden">Đăng xuất</button>
+    <button onclick="navigate('taoThiep')" class="hidden">Tạo thiệp cưới</button>
+    <button onclick="navigate('muaQua')" class="hidden">Mua quà tặng</button>
+    <button onclick="navigate('thueDo')" class="hidden">Thuê đồ</button>
+    <button onclick="navigate('hoSo')" class="hidden">Hồ sơ cá nhân</button>
+    <button onclick="navigate('xemNgayTot')" class="hidden">Xem ngày tốt</button>
+  </nav>
 
-    <section id="loginSection">
-      <h2>Đăng nhập</h2>
-      <input type="text" id="username" placeholder="Tên đăng nhập">
-      <input type="password" id="password" placeholder="Mật khẩu">
-      <button onclick="login()">Đăng nhập</button>
-    </section>
+  <section id="content">
+    <!-- Các mục động sẽ render ở đây -->
+  </section>
 
-    <section id="dashboard" style="display: none;">
-      <h2>Xin chào <span id="currentUser"></span></h2>
-      <button onclick="toggleSection('weddingCardSection')">Tạo thiệp cưới</button>
-      <button onclick="toggleSection('giftShopSection')">Mua quà tặng</button>
-      <button onclick="toggleSection('rentSection')">Thuê đồ</button>
-      <button onclick="toggleSection('profileSection')">Hồ sơ cá nhân</button>
-      <button onclick="toggleSection('goodDaySection')">Xem ngày tốt</button>
-    </section>
+  <!-- Form đăng nhập -->
+  <section id="loginForm" class="card hidden">
+    <h3>Đăng nhập</h3>
+    <input type="text" id="loginUser" placeholder="Tên đăng nhập">
+    <input type="password" id="loginPass" placeholder="Mật khẩu">
+    <button onclick="login()">Đăng nhập</button>
+  </section>
 
-    <section id="weddingCardSection" style="display: none;">
-      <h3>Thiệp cưới</h3>
-      <textarea placeholder="Nội dung thiệp..." rows="10" cols="50"></textarea><br>
-      <button>Lưu thiệp</button>
-      <button>Chia sẻ Zalo</button>
-      <button>Chia sẻ Messenger</button>
-    </section>
+  <!-- Form đăng ký -->
+  <section id="registerForm" class="card hidden">
+    <h3>Đăng ký</h3>
+    <input type="text" id="regUser" placeholder="Tên đăng nhập">
+    <input type="password" id="regPass" placeholder="Mật khẩu">
+    <button onclick="register()">Đăng ký</button>
+  </section>
 
-    <section id="giftShopSection" style="display: none;">
-      <h3>Mua quà tặng từ xa</h3>
-      <div class="product">
-        <img src="gift.jpg" alt="Sản phẩm">
-        <p>Tên sản phẩm</p>
-        <p>Giá: 100.000đ</p>
-        <textarea placeholder="Bình luận..."></textarea><br>
-        <button onclick="showOrderForm('gift')">Mua</button>
-      </div>
-    </section>
+  <script>
+    let currentUser = localStorage.getItem('user') || null;
 
-    <section id="rentSection" style="display: none;">
-      <h3>Thuê đồ</h3>
-      <div class="product">
-        <img src="rent.jpg" alt="Sản phẩm thuê">
-        <p>Áo cưới cao cấp</p>
-        <p>Giá thuê: 500.000đ/ngày</p>
-        <button onclick="showOrderForm('rent')">Thuê</button>
-      </div>
-    </section>
+    function toggleForm(id) {
+      document.querySelectorAll('section').forEach(s => s.classList.add('hidden'));
+      document.getElementById(id).classList.toggle('hidden');
+    }
 
-    <section id="profileSection" style="display: none;">
-      <h3>Hồ sơ cá nhân</h3>
-      <p>Tên: <span id="profileName">Khách</span></p>
-      <h4>Đơn hàng đã đặt</h4>
-      <div id="orders">Không có đơn hàng</div>
-      <button onclick="chatWithUser()">Nhắn tin</button>
-    </section>
+    function login() {
+      const user = document.getElementById('loginUser').value;
+      const pass = document.getElementById('loginPass').value;
+      const savedUser = localStorage.getItem(user);
+      if (savedUser && savedUser === pass) {
+        alert('Đăng nhập thành công');
+        currentUser = user;
+        localStorage.setItem('user', user);
+        showMenu();
+      } else {
+        alert('Sai tài khoản hoặc mật khẩu');
+      }
+    }
 
-    <section id="goodDaySection" style="display: none;">
-      <h3>Xem ngày tốt</h3>
-      <input type="date" id="selectedDate">
-      <button onclick="checkGoodDay()">Xem ngày</button>
-      <p id="goodDayResult"></p>
-    </section>
+    function register() {
+      const user = document.getElementById('regUser').value;
+      const pass = document.getElementById('regPass').value;
+      localStorage.setItem(user, pass);
+      alert('Đăng ký thành công, vui lòng đăng nhập');
+      toggleForm('loginForm');
+    }
 
-    <section id="orderForm" style="display: none;">
-      <h3>Nhập thông tin đặt hàng</h3>
-      <input type="text" placeholder="Tên">
-      <input type="text" placeholder="Địa chỉ">
-      <input type="tel" placeholder="SĐT">
-      <button onclick="completeOrder()">Xác nhận đặt</button>
-    </section>
-  </main>
+    function logout() {
+      currentUser = null;
+      localStorage.removeItem('user');
+      hideMenu();
+      document.getElementById('content').innerHTML = '';
+    }
 
-  <script src="script.js"></script>
+    function showMenu() {
+      document.querySelectorAll('nav button').forEach(btn => btn.classList.remove('hidden'));
+      toggleForm('none');
+    }
+
+    function hideMenu() {
+      document.querySelectorAll('nav button').forEach(btn => {
+        if (!['Đăng nhập', 'Đăng ký'].includes(btn.textContent)) {
+          btn.classList.add('hidden');
+        }
+      });
+    }
+
+    function navigate(page) {
+      document.getElementById('content').innerHTML = `<div class='card'><strong>${page}</strong> - Tính năng đang được phát triển</div>`;
+    }
+
+    if (currentUser) {
+      showMenu();
+    }
+  </script>
 </body>
 </html>
