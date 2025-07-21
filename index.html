@@ -1,132 +1,98 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Thiệp mời đám cưới</title>
-  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Roboto&display=swap" rel="stylesheet"/>
-  <style>
-    body {
-      font-family: 'Roboto', sans-serif;
-      background: linear-gradient(to right, #ffe5e5, #fff0f0);
-      margin: 0;
-      padding: 0;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-
-    header {
-      background-color: #d6336c;
-      color: white;
-      padding: 20px;
-      text-align: center;
-      font-family: 'Great Vibes', cursive;
-      font-size: 36px;
-    }
-
-    main {
-      margin-top: 30px;
-      width: 90%;
-      max-width: 500px;
-      background: white;
-      padding: 20px;
-      border-radius: 16px;
-      box-shadow: 0 0 20px rgba(0,0,0,0.1);
-    }
-
-    label {
-      font-weight: bold;
-      display: block;
-      margin: 12px 0 4px;
-    }
-
-    input, textarea {
-      width: 100%;
-      padding: 10px;
-      border: 1px solid #ccc;
-      border-radius: 8px;
-      font-size: 16px;
-    }
-
-    button {
-      margin-top: 20px;
-      width: 100%;
-      padding: 12px;
-      font-size: 18px;
-      background-color: #d6336c;
-      color: white;
-      border: none;
-      border-radius: 10px;
-      cursor: pointer;
-    }
-
-    button:hover {
-      background-color: #c2185b;
-    }
-
-    .invite-card {
-      margin-top: 30px;
-      padding: 20px;
-      background: #fff5f8;
-      border: 2px dashed #d6336c;
-      border-radius: 16px;
-      font-family: 'Great Vibes', cursive;
-      font-size: 22px;
-      text-align: center;
-      display: none;
-    }
-
-    .share {
-      margin-top: 10px;
-      text-align: center;
-    }
-
-    .share button {
-      background-color: #28a745;
-    }
-  </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ứng dụng Thiệp Mời Đám Cưới</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <header>Thiệp Mời Đám Cưới</header>
+  <header>
+    <h1>Ứng dụng Thiệp Mời Đám Cưới</h1>
+    <nav id="menu">
+      <button onclick="toggleSection('loginSection')">Đăng nhập</button>
+      <button onclick="toggleSection('registerSection')">Đăng ký</button>
+      <button onclick="logout()">Đăng xuất</button>
+    </nav>
+  </header>
 
   <main>
-    <label for="from">Tên cô dâu & chú rể:</label>
-    <input id="from" placeholder="Ví dụ: Nam & Hương" />
+    <section id="registerSection" style="display: none;">
+      <h2>Đăng ký tài khoản</h2>
+      <input type="text" id="regUsername" placeholder="Tên đăng nhập">
+      <input type="password" id="regPassword" placeholder="Mật khẩu">
+      <button onclick="register()">Đăng ký</button>
+    </section>
 
-    <label for="to">Tên khách mời:</label>
-    <input id="to" placeholder="Ví dụ: Anh Tuấn" />
+    <section id="loginSection">
+      <h2>Đăng nhập</h2>
+      <input type="text" id="username" placeholder="Tên đăng nhập">
+      <input type="password" id="password" placeholder="Mật khẩu">
+      <button onclick="login()">Đăng nhập</button>
+    </section>
 
-    <label for="message">Lời nhắn:</label>
-    <textarea id="message" rows="4" placeholder="Hân hạnh được đón tiếp bạn tại buổi lễ..."></textarea>
+    <section id="dashboard" style="display: none;">
+      <h2>Xin chào <span id="currentUser"></span></h2>
+      <button onclick="toggleSection('weddingCardSection')">Tạo thiệp cưới</button>
+      <button onclick="toggleSection('giftShopSection')">Mua quà tặng</button>
+      <button onclick="toggleSection('rentSection')">Thuê đồ</button>
+      <button onclick="toggleSection('profileSection')">Hồ sơ cá nhân</button>
+      <button onclick="toggleSection('goodDaySection')">Xem ngày tốt</button>
+    </section>
 
-    <button onclick="generateInvite()">Tạo thiệp</button>
+    <section id="weddingCardSection" style="display: none;">
+      <h3>Thiệp cưới</h3>
+      <textarea placeholder="Nội dung thiệp..." rows="10" cols="50"></textarea><br>
+      <button>Lưu thiệp</button>
+      <button>Chia sẻ Zalo</button>
+      <button>Chia sẻ Messenger</button>
+    </section>
 
-    <div class="invite-card" id="card">
-      <p id="cardText"></p>
-    </div>
+    <section id="giftShopSection" style="display: none;">
+      <h3>Mua quà tặng từ xa</h3>
+      <div class="product">
+        <img src="gift.jpg" alt="Sản phẩm">
+        <p>Tên sản phẩm</p>
+        <p>Giá: 100.000đ</p>
+        <textarea placeholder="Bình luận..."></textarea><br>
+        <button onclick="showOrderForm('gift')">Mua</button>
+      </div>
+    </section>
 
-    <div class="share" id="shareBtn" style="display: none;">
-      <button onclick="alert('Đã sao chép link giả lập!')">Chia sẻ</button>
-    </div>
+    <section id="rentSection" style="display: none;">
+      <h3>Thuê đồ</h3>
+      <div class="product">
+        <img src="rent.jpg" alt="Sản phẩm thuê">
+        <p>Áo cưới cao cấp</p>
+        <p>Giá thuê: 500.000đ/ngày</p>
+        <button onclick="showOrderForm('rent')">Thuê</button>
+      </div>
+    </section>
+
+    <section id="profileSection" style="display: none;">
+      <h3>Hồ sơ cá nhân</h3>
+      <p>Tên: <span id="profileName">Khách</span></p>
+      <h4>Đơn hàng đã đặt</h4>
+      <div id="orders">Không có đơn hàng</div>
+      <button onclick="chatWithUser()">Nhắn tin</button>
+    </section>
+
+    <section id="goodDaySection" style="display: none;">
+      <h3>Xem ngày tốt</h3>
+      <input type="date" id="selectedDate">
+      <button onclick="checkGoodDay()">Xem ngày</button>
+      <p id="goodDayResult"></p>
+    </section>
+
+    <section id="orderForm" style="display: none;">
+      <h3>Nhập thông tin đặt hàng</h3>
+      <input type="text" placeholder="Tên">
+      <input type="text" placeholder="Địa chỉ">
+      <input type="tel" placeholder="SĐT">
+      <button onclick="completeOrder()">Xác nhận đặt</button>
+    </section>
   </main>
 
-  <script>
-    function generateInvite() {
-      const from = document.getElementById('from').value.trim();
-      const to = document.getElementById('to').value.trim();
-      const msg = document.getElementById('message').value.trim();
-
-      if (!from || !to || !msg) {
-        alert("Vui lòng nhập đầy đủ thông tin!");
-        return;
-      }
-
-      const cardText = `${to} thân mến, bạn được mời đến dự lễ cưới của ${from}. ${msg}`;
-      document.getElementById('cardText').innerText = cardText;
-      document.getElementById('card').style.display = 'block';
-      document.getElementById('shareBtn').style.display = 'block';
-    }
-  </script>
+  <script src="script.js"></script>
 </body>
 </html>
