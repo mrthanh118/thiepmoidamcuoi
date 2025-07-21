@@ -1,157 +1,211 @@
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="en">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Ứng dụng Thiệp Mời Đám Cưới</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Wedding Invitation App</title>
   <style>
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(to right, #f8f0f8, #fff0f5);
       margin: 0;
       padding: 0;
-      background: linear-gradient(to bottom right, #ffdee9, #b5fffc);
       color: #333;
     }
+
     header {
-      background-color: #ff6b81;
+      background-color: #d63384;
       color: white;
       padding: 1rem;
       text-align: center;
-      font-size: 1.8rem;
     }
+
     nav {
-      background-color: #fff;
-      padding: 1rem;
+      background: #fff;
       display: flex;
       justify-content: space-around;
-      border-bottom: 2px solid #ddd;
+      padding: 1rem 0;
+      border-bottom: 1px solid #ddd;
     }
-    nav button {
-      background-color: #ff6b81;
-      color: white;
-      border: none;
-      padding: 0.5rem 1rem;
-      border-radius: 5px;
+
+    nav a {
+      color: #d63384;
+      text-decoration: none;
+      font-weight: bold;
       cursor: pointer;
     }
-    section {
-      padding: 1rem;
+
+    nav a.hidden {
+      display: none;
     }
+
+    .container {
+      padding: 2rem;
+    }
+
     .hidden {
       display: none;
     }
-    .card {
-      background-color: white;
-      padding: 1rem;
-      margin: 1rem 0;
-      border-radius: 8px;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+
+    .form-section {
+      background: #fff;
+      padding: 2rem;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      max-width: 600px;
+      margin: auto;
     }
-    input, textarea, select {
+
+    input, textarea, select, button {
       display: block;
       width: 100%;
-      margin: 0.5rem 0;
-      padding: 0.5rem;
-      border-radius: 4px;
+      padding: 0.8rem;
+      margin-bottom: 1rem;
       border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 1rem;
     }
-    .submit-btn {
-      background-color: #28a745;
+
+    button {
+      background-color: #d63384;
       color: white;
       border: none;
-      padding: 0.5rem 1rem;
-      border-radius: 5px;
       cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #ad296b;
+    }
+
+    .card {
+      background: #fff;
+      padding: 1rem;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      margin-bottom: 1rem;
     }
   </style>
 </head>
+
 <body>
   <header>
-    Ứng dụng Thiệp Mời Đám Cưới
+    <h1>Ứng dụng Thiệp Cưới</h1>
   </header>
-
   <nav>
-    <button onclick="showSection('login')">Đăng nhập</button>
-    <button onclick="toggleRegister()">Đăng ký</button>
-    <button onclick="showSection('createCard')">Tạo Thiệp</button>
-    <button onclick="showSection('gifts')">Quà Tặng</button>
-    <button onclick="showSection('rent')">Thuê Đồ</button>
-    <button onclick="showSection('profile')">Hồ Sơ</button>
-    <button onclick="showSection('goodDay')">Xem Ngày Tốt</button>
-    <button onclick="logout()">Đăng Xuất</button>
+    <a id="homeNav">🏠 Home</a>
+    <a id="loginNav">🔐 Đăng nhập</a>
+    <a id="registerNav">📥 Đăng ký</a>
+    <a id="logoutNav" class="hidden">🚪 Đăng xuất</a>
+    <a id="createCardNav" class="hidden">💌 Tạo Thiệp</a>
+    <a id="giftNav" class="hidden">🎁 Quà Tặng</a>
+    <a id="rentNav" class="hidden">👗 Thuê Đồ</a>
+    <a id="profileNav" class="hidden">👤 Hồ Sơ</a>
+    <a id="luckyDateNav" class="hidden">📅 Ngày Tốt</a>
   </nav>
-
-  <section id="login" class="card">
-    <h2>Đăng Nhập</h2>
-    <input type="text" placeholder="Tên đăng nhập">
-    <input type="password" placeholder="Mật khẩu">
-    <button class="submit-btn">Đăng Nhập</button>
-  </section>
-
-  <section id="register" class="card hidden">
-    <h2>Đăng Ký</h2>
-    <input type="text" placeholder="Tên đăng nhập">
-    <input type="password" placeholder="Mật khẩu">
-    <input type="password" placeholder="Nhập lại mật khẩu">
-    <button class="submit-btn">Đăng Ký</button>
-  </section>
-
-  <section id="createCard" class="card hidden">
-    <h2>Tạo Thiệp Cưới</h2>
-    <textarea placeholder="Tên cô dâu/chú rể, địa chỉ, khách mời..."></textarea>
-    <select>
-      <option>Font chữ đẹp</option>
-      <option>Font nghiêng</option>
-      <option>Font đậm</option>
-    </select>
-    <button class="submit-btn">Lưu Thiệp</button>
-    <button class="submit-btn">Chia sẻ</button>
-  </section>
-
-  <section id="gifts" class="card hidden">
-    <h2>Quà Tặng</h2>
-    <div>
-      <p>Tên sản phẩm, ảnh, giá, mô tả</p>
-      <button>Mua</button>
+  <div class="container" id="content">
+    <div id="homePage">
+      <h2>Chào mừng đến với ứng dụng thiệp cưới!</h2>
+      <p>Vui lòng đăng nhập để bắt đầu sử dụng các tính năng.</p>
     </div>
-  </section>
-
-  <section id="rent" class="card hidden">
-    <h2>Thuê Đồ</h2>
-    <div>
-      <p>Tên sản phẩm, ảnh, giá thuê, mô tả</p>
-      <button>Thuê</button>
+    <div id="loginPage" class="form-section hidden">
+      <h2>Đăng nhập</h2>
+      <input type="text" placeholder="Tên đăng nhập" id="loginUsername" />
+      <input type="password" placeholder="Mật khẩu" id="loginPassword" />
+      <button onclick="handleLogin()">Đăng nhập</button>
     </div>
-  </section>
-
-  <section id="profile" class="card hidden">
-    <h2>Hồ Sơ Cá Nhân</h2>
-    <p>Thông tin cá nhân và đơn hàng</p>
-    <button>Nhắn Tin</button>
-  </section>
-
-  <section id="goodDay" class="card hidden">
-    <h2>Xem Ngày Tốt</h2>
-    <input type="date">
-    <button class="submit-btn">Xem</button>
-    <p>Kết quả xem ngày sẽ hiện ở đây...</p>
-  </section>
+    <div id="registerPage" class="form-section hidden">
+      <h2>Đăng ký</h2>
+      <input type="text" placeholder="Tên đăng nhập" id="registerUsername" />
+      <input type="password" placeholder="Mật khẩu" id="registerPassword" />
+      <button onclick="handleRegister()">Đăng ký</button>
+    </div>
+    <div id="createCardPage" class="form-section hidden">
+      <h2>Tạo Thiệp Cưới</h2>
+      <input type="text" placeholder="Tên cô dâu" />
+      <input type="text" placeholder="Tên chú rể" />
+      <input type="text" placeholder="Địa chỉ nhà cô dâu" />
+      <input type="text" placeholder="Địa chỉ nhà chú rể" />
+      <input type="text" placeholder="Tên khách mời" />
+      <input type="text" placeholder="Thời gian tổ chức" />
+      <input type="text" placeholder="Địa điểm tổ chức" />
+      <select>
+        <option>Chọn font chữ</option>
+        <option>Đẹp</option>
+        <option>Lãng mạn</option>
+      </select>
+      <button>Tạo Thiệp</button>
+      <button>Lưu Thiệp</button>
+      <button>Chia sẻ</button>
+    </div>
+    <div id="giftPage" class="form-section hidden">
+      <h2>Quà Tặng Từ Xa</h2>
+      <p>(Chức năng đặt quà sẽ được thêm sau)</p>
+    </div>
+    <div id="rentPage" class="form-section hidden">
+      <h2>Thuê Đồ</h2>
+      <p>(Chức năng thuê đồ sẽ được thêm sau)</p>
+    </div>
+    <div id="profilePage" class="form-section hidden">
+      <h2>Hồ Sơ Cá Nhân</h2>
+      <p>(Thông tin hồ sơ sẽ hiển thị ở đây)</p>
+    </div>
+    <div id="luckyDatePage" class="form-section hidden">
+      <h2>Xem Ngày Tốt</h2>
+      <input type="date" />
+      <button>Xem Ngày</button>
+    </div>
+  </div>
 
   <script>
-    function showSection(id) {
-      document.querySelectorAll('section').forEach(sec => sec.classList.add('hidden'));
-      document.getElementById(id).classList.remove('hidden');
+    let isLoggedIn = false;
+
+    function showPage(pageId) {
+      document.querySelectorAll(".container > div").forEach(div => div.classList.add("hidden"));
+      document.getElementById(pageId).classList.remove("hidden");
     }
 
-    function toggleRegister() {
-      const reg = document.getElementById('register');
-      reg.classList.toggle('hidden');
+    function toggleMenu(loggedIn) {
+      document.getElementById("loginNav").classList.toggle("hidden", loggedIn);
+      document.getElementById("registerNav").classList.toggle("hidden", loggedIn);
+      document.getElementById("logoutNav").classList.toggle("hidden", !loggedIn);
+      document.getElementById("createCardNav").classList.toggle("hidden", !loggedIn);
+      document.getElementById("giftNav").classList.toggle("hidden", !loggedIn);
+      document.getElementById("rentNav").classList.toggle("hidden", !loggedIn);
+      document.getElementById("profileNav").classList.toggle("hidden", !loggedIn);
+      document.getElementById("luckyDateNav").classList.toggle("hidden", !loggedIn);
     }
 
-    function logout() {
-      alert("Bạn đã đăng xuất!");
-      showSection('login');
+    function handleLogin() {
+      isLoggedIn = true;
+      toggleMenu(true);
+      showPage("homePage");
     }
+
+    function handleRegister() {
+      alert("Đăng ký thành công. Hãy đăng nhập.");
+      showPage("loginPage");
+    }
+
+    function handleLogout() {
+      isLoggedIn = false;
+      toggleMenu(false);
+      showPage("homePage");
+    }
+
+    document.getElementById("homeNav").onclick = () => showPage("homePage");
+    document.getElementById("loginNav").onclick = () => showPage("loginPage");
+    document.getElementById("registerNav").onclick = () => showPage("registerPage");
+    document.getElementById("logoutNav").onclick = () => handleLogout();
+    document.getElementById("createCardNav").onclick = () => showPage("createCardPage");
+    document.getElementById("giftNav").onclick = () => showPage("giftPage");
+    document.getElementById("rentNav").onclick = () => showPage("rentPage");
+    document.getElementById("profileNav").onclick = () => showPage("profilePage");
+    document.getElementById("luckyDateNav").onclick = () => showPage("luckyDatePage");
+
+    toggleMenu(false);
+    showPage("homePage");
   </script>
 </body>
+
 </html>
